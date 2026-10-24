@@ -68,6 +68,9 @@ export function parseModelOutput(json: unknown, allowed: AllowedShas): ParsedMod
   if (extraTop.length > 0) return malformed(`unexpected top-level field(s): ${extraTop.join(', ')}`);
   const rawBullets = json.bullets;
   if (!Array.isArray(rawBullets)) return malformed('bullets is not an array');
+  // Deliberate: the generator's role is one sentence per unit or skip (merging only reduces the count), so more
+  // bullets than request units means the output ignored its contract; the whole chunk is refused rather than
+  // trimmed. Documented in docs/LIMITATIONS.md.
   const unitCount = new Set(allowed.values()).size;
   if (rawBullets.length > unitCount) return malformed(`${rawBullets.length} bullets for ${unitCount} units`);
 

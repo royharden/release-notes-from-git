@@ -73,6 +73,9 @@ describe('parseLog record-level rejection', () => {
     ],
     ['parent that is not a sha', { parents: ['HEAD~1'] }, 'bad_parents'],
     ['date that is not ISO-8601', { date: 'Oct 1 2026' }, 'bad_date'],
+    ['impossible calendar day (30 February)', { date: '2026-02-30T12:00:00+00:00' }, 'bad_date'],
+    ['impossible month', { date: '2026-13-01T12:00:00Z' }, 'bad_date'],
+    ['hour out of range', { date: '2026-10-01T24:00:00Z' }, 'bad_date'],
     ['negative count', { files: [{ path: 'a.ts', added: -1, deleted: 0 }] }, 'bad_counts'],
     ['fractional count', { files: [{ path: 'a.ts', added: 1.5, deleted: 0 }] }, 'bad_counts'],
     ['missing count', { files: [{ path: 'a.ts', added: 1 }] }, 'bad_counts'],
@@ -86,6 +89,10 @@ describe('parseLog record-level rejection', () => {
     expect(log.commits.map((c) => c.sha)).toEqual([sha(1), sha(3)]);
     expect(log.rejected).toEqual([{ index: 1, sha: sha(2), code }]);
     expect(result.report.rejectedByCode[code as keyof typeof result.report.rejectedByCode]).toBe(1);
+  });
+
+  it('accepts a leap day', () => {
+    expect(okLog(parseLog(logText([commit(1, { date: '2028-02-29T00:00:00Z' })]))).rejected).toEqual([]);
   });
 
   it('rejects a non-finite count (1e999 parses to Infinity)', () => {
@@ -108,8 +115,9 @@ describe('parseLog record-level rejection', () => {
   });
 
   it('keeps binary numstat as null and normalises upper-case shas', () => {
-    const log = okLog(parseLog(logText([commit(1, { sha: sha(1).toUpperCase(), files: [{ path: 'logo.png', added: null, deleted: null }] })])));
-    expect(log.commits[0]?.sha).toBe(sha(1));
+    const upper = 'AB'.repeat(20);
+    const log = okLog(parseLog(logText([commit(1, { sha: upper, files: [{ path: 'logo.png', added: null, deleted: null }] })])));
+    expect(log.commits[0]?.sha).toBe('ab'.repeat(20));
     expect(log.commits[0]?.files).toEqual([{ path: 'logo.png', added: null, deleted: null }]);
   });
 });

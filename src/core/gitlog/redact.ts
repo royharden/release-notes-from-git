@@ -65,6 +65,8 @@ export function baseUrlProblem(raw: string): 'credential_url' | 'email' | null {
   try {
     url = new URL(raw);
   } catch {
+    // Unparseable: an address anywhere is an email; any other "@" may be a user-info separator.
+    if (containsEmail(raw) || containsEmail(safeDecode(raw))) return 'email';
     return raw.includes('@') ? 'credential_url' : null;
   }
   if (url.username !== '' || url.password !== '') return 'credential_url';

@@ -1,11 +1,12 @@
 // Ruling key = sha256(normalised text + "\n" + sorted full cites joined by ","). Normalisation: Unicode NFC,
-// lower case, whitespace runs collapsed to one space, trimmed. Callers pass resolved full shas when the cites
+// lower case, NFC again, whitespace runs collapsed to one space, trimmed. Callers pass resolved full shas when the cites
 // resolve, else the cites as written (lower-cased here), so unresolvable bullets still get a stable key.
 
 import { sha256Hex } from '../../../supabase/functions/_shared/core/hash.ts';
 
 export function normaliseText(text: string): string {
-  return text.normalize('NFC').toLowerCase().replace(/\s+/g, ' ').trim();
+  // NFC again after lower-casing: case mapping can yield sequences that are no longer NFC-composed.
+  return text.normalize('NFC').toLowerCase().normalize('NFC').replace(/\s+/g, ' ').trim();
 }
 
 export function normaliseCites(cites: readonly string[]): string[] {

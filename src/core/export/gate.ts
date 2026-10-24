@@ -51,7 +51,7 @@ export function prepareExport(state: ReviewState, meta: ExportMeta, validate: Va
   if (metaProblem !== null) return refuse('bad_meta', metaProblem);
 
   const live = state.bullets.filter(isLive);
-  const verdicts = validate(live.map((b) => ({ text: b.text, category: b.category, cites: b.cites })));
+  const verdicts = validate(live.map((b) => ({ text: b.text, category: b.category, cites: b.cites, key: b.key })));
   if (verdicts.length !== live.length) {
     return refuse('validator_mismatch', `validator returned ${verdicts.length} verdicts for ${live.length} bullets`);
   }
@@ -86,7 +86,7 @@ export function prepareExport(state: ReviewState, meta: ExportMeta, validate: Va
     return refuse('hard_reason', `${blocked.length} bullet(s) fail a citation check; repair citations first`, blocked);
   }
 
-  const counts = countsFor(state, fresh, live, exported);
+  const counts = countsFor(state, fresh, exported);
   const removed = state.bullets.filter((b) => b.removed).map((b) => b.key);
   const edits = state.bullets.flatMap((b) => (b.superseded_by === null ? [] : [{ from: b.key, to: b.superseded_by }]));
   const payload = buildApprovalPayload({ exported, removed, edits, counts, meta });
@@ -129,7 +129,6 @@ export async function exportApproved(state: ReviewState, meta: ExportMeta, valid
 function countsFor(
   state: ReviewState,
   fresh: ReadonlyMap<ReviewBullet, Verdict>,
-  live: readonly ReviewBullet[],
   exported: readonly ExportedBullet[],
 ): ExportCounts {
   const generated = state.bullets.filter((b) => b.origin === 'model');
@@ -140,7 +139,8 @@ function countsFor(
     validator_dropped: generated.length - validatorKept,
     human_removed: state.bullets.filter((b) => b.removed).length,
     human_restored: exported.filter((b) => b.attestation === 'human_attested').length,
-    human_added: live.filter((b) => b.origin === 'human_add').length,
+    // Only human-added bullets that reach the export: an added literal the validator drops is not counted.
+    human_added: exported.filter((b) => b.origin === 'human_add').length,
   };
 }
 

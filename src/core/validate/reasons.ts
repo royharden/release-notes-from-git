@@ -71,7 +71,7 @@ export interface Evidence {
   /** Content tokens found / not found in the active evidence (support score inputs, highlight terms). */
   matchedTerms: string[];
   unmatchedTerms: string[];
-  /** Content key of the earlier bullet this one duplicates. */
+  /** Content key of the earlier bullet this one duplicates (`#<index>` when the caller supplied no key). */
   duplicateOf: string | null;
   /** Short code-generated explanations, one per failing check. Never model or commit text. */
   notes: string[];
@@ -98,7 +98,7 @@ export interface Verdict {
   reasons: ReasonCode[];
   warnings: WarningCode[];
   evidence: Evidence;
-  /** found/total content tokens; null when support was not evaluated (a hard reason failed first). */
+  /** found/total content tokens (0 when there are none); null when no active cited evidence existed to score. */
   support_score: number | null;
 }
 
@@ -107,6 +107,8 @@ export interface BulletInput {
   text: string;
   category: Category;
   cites: string[];
+  /** Content key (rulingKey) when the caller has one; duplicate_of evidence names it. Never read by any check. */
+  key?: string;
 }
 
 /** validateAll as the export gate and UI consume it: context (facts, thresholds) bound by the caller. */

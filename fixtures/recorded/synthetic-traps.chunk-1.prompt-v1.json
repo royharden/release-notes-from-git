@@ -1,0 +1,318 @@
+{
+  "schema": "recording.v1",
+  "output": {
+    "bullets": [
+      {
+        "text": "CSV export escapes commas.",
+        "category": "fix",
+        "cites": [
+          "d830d1d8"
+        ]
+      },
+      {
+        "text": "Commas are escaped in CSV export.",
+        "category": "fix",
+        "cites": [
+          "d830d1d8276edb6cfe0b3995bda8d1675377e903"
+        ]
+      },
+      {
+        "text": "Every open bug is now fixed, all 42 of them.",
+        "category": "fix",
+        "cites": [
+          "8706694866918146fa3859399a32d9e5d107087c"
+        ]
+      },
+      {
+        "text": "An empty config file loads the defaults instead of throwing.",
+        "category": "fix",
+        "cites": [
+          "8706694866918146fa3859399a32d9e5d107087c"
+        ]
+      },
+      {
+        "text": "A `--quiet` flag suppresses progress output.",
+        "category": "feature",
+        "cites": [
+          "44ebe81364f951853634c4c06e780200b680b19f"
+        ]
+      },
+      {
+        "text": "Various improvements.",
+        "category": "other",
+        "cites": [
+          "44ebe81364f951853634c4c06e780200b680b19f"
+        ]
+      },
+      {
+        "text": "The legacy export format is no longer produced.",
+        "category": "other",
+        "cites": [
+          "9e9dd3f4155b022fa8f44287b6b96b6dcb2bc97c"
+        ]
+      },
+      {
+        "text": "A getting-started guide is available.",
+        "category": "feature",
+        "cites": [
+          "73091cee22bc93b668c591d21cbcc4e1c0b66353"
+        ]
+      },
+      {
+        "text": "File handles are closed on the second error path.",
+        "category": "fix",
+        "cites": [
+          "fac3a7781e5ad991316affd8935b4f69284be2b4"
+        ]
+      },
+      {
+        "text": "Upload retries now break existing clients.",
+        "category": "breaking",
+        "cites": [
+          "3543ba9cd35226a183ab54b3faea87134533bbb2"
+        ]
+      },
+      {
+        "text": "The v1 upload endpoint is removed; clients must use /v2/upload.",
+        "category": "breaking",
+        "cites": [
+          "d766c1e76f3d05ec1451e6654873f26e22843984"
+        ]
+      },
+      {
+        "text": "The v1 upload endpoint is removed in 2.0.0.",
+        "category": "breaking",
+        "cites": [
+          "d766c1e76f3d05ec1451e6654873f26e22843984"
+        ]
+      },
+      {
+        "text": "Redirect targets are sanitized to prevent an open redirect vulnerability.",
+        "category": "security",
+        "cites": [
+          "ad3ee5cf63c075157c23118b624fbc9641c3bb88"
+        ]
+      },
+      {
+        "text": "Quoted newlines inside fields are kept when parsing, which means that multi-line values in spreadsheets exported from other tools now survive a round trip through the importer without being split into separate rows or losing their surrounding quotes.",
+        "category": "fix",
+        "cites": [
+          "31e977cc30ccfedb64a2d8d38fb6a35089c78f16"
+        ]
+      },
+      {
+        "text": "Shell completion is available for bash and zsh.",
+        "category": "fix",
+        "cites": [
+          "f64f5a96e1e64bedc8a0d845d51287f74b5ae29a"
+        ]
+      },
+      {
+        "text": "Startup is faster.",
+        "category": "performance",
+        "cites": []
+      },
+      {
+        "text": "Adds offline mode for the desktop app.",
+        "category": "feature",
+        "cites": [
+          "9f2c4e1b7a3d5c6e8f0a1b2c3d4e5f6a7b8c9d0e"
+        ]
+      },
+      {
+        "text": "Tab-separated input is supported.",
+        "category": "feature",
+        "cites": [
+          "d1d83a2235653280d16df3689d776fec18de20d0"
+        ]
+      }
+    ]
+  },
+  "usage": null,
+  "annotations": [
+    {
+      "index": 0,
+      "trap": "t_short_sha_collision",
+      "expect": {
+        "stage": "validator",
+        "kept": false,
+        "reason": "cite_ambiguous",
+        "warnings": []
+      }
+    },
+    {
+      "index": 1,
+      "trap": null,
+      "expect": {
+        "stage": "validator",
+        "kept": true,
+        "reason": null,
+        "warnings": []
+      }
+    },
+    {
+      "index": 2,
+      "trap": "t_injection_in_body",
+      "expect": {
+        "stage": "validator",
+        "kept": false,
+        "reason": "literal_not_in_evidence",
+        "warnings": []
+      }
+    },
+    {
+      "index": 3,
+      "trap": null,
+      "expect": {
+        "stage": "validator",
+        "kept": true,
+        "reason": null,
+        "warnings": []
+      }
+    },
+    {
+      "index": 4,
+      "trap": null,
+      "expect": {
+        "stage": "validator",
+        "kept": true,
+        "reason": null,
+        "warnings": []
+      }
+    },
+    {
+      "index": 5,
+      "trap": "t_zero_token_bullet",
+      "expect": {
+        "stage": "validator",
+        "kept": false,
+        "reason": "low_support",
+        "warnings": []
+      }
+    },
+    {
+      "index": 6,
+      "trap": "t_revert_outside_range",
+      "expect": {
+        "stage": "validator",
+        "kept": true,
+        "reason": null,
+        "warnings": []
+      }
+    },
+    {
+      "index": 7,
+      "trap": "t_docs_only_called_feat",
+      "expect": {
+        "stage": "validator",
+        "kept": true,
+        "reason": null,
+        "warnings": []
+      }
+    },
+    {
+      "index": 8,
+      "trap": "t_same_subject_distinct",
+      "expect": {
+        "stage": "validator",
+        "kept": true,
+        "reason": null,
+        "warnings": [
+          "possible_duplicate_unit"
+        ]
+      }
+    },
+    {
+      "index": 9,
+      "trap": "planted_inflated_breaking",
+      "expect": {
+        "stage": "validator",
+        "kept": false,
+        "reason": "category_unsupported",
+        "warnings": []
+      }
+    },
+    {
+      "index": 10,
+      "trap": null,
+      "expect": {
+        "stage": "validator",
+        "kept": true,
+        "reason": null,
+        "warnings": []
+      }
+    },
+    {
+      "index": 11,
+      "trap": "planted_invented_version",
+      "expect": {
+        "stage": "validator",
+        "kept": false,
+        "reason": "literal_not_in_evidence",
+        "warnings": []
+      }
+    },
+    {
+      "index": 12,
+      "trap": null,
+      "expect": {
+        "stage": "validator",
+        "kept": true,
+        "reason": null,
+        "warnings": []
+      }
+    },
+    {
+      "index": 13,
+      "trap": "planted_too_long",
+      "expect": {
+        "stage": "validator",
+        "kept": false,
+        "reason": "too_long",
+        "warnings": []
+      }
+    },
+    {
+      "index": 14,
+      "trap": "planted_category_mismatch",
+      "expect": {
+        "stage": "validator",
+        "kept": true,
+        "reason": null,
+        "warnings": [
+          "category_mismatch"
+        ]
+      }
+    },
+    {
+      "index": 15,
+      "trap": "planted_no_citation",
+      "expect": {
+        "stage": "validator",
+        "kept": false,
+        "reason": "no_citation",
+        "warnings": []
+      }
+    },
+    {
+      "index": 16,
+      "trap": "planted_phantom_sha",
+      "expect": {
+        "stage": "request",
+        "kept": false,
+        "reason": "cite_out_of_range",
+        "warnings": []
+      }
+    },
+    {
+      "index": 17,
+      "trap": "t_cite_outside_request",
+      "expect": {
+        "stage": "request",
+        "kept": false,
+        "reason": "cite_out_of_range",
+        "warnings": []
+      }
+    }
+  ]
+}

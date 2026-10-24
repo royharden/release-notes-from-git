@@ -1,0 +1,964 @@
+{
+  "schema": "gitlog.v1",
+  "repo_label": "synthetic/small-demo",
+  "from_ref": "v3.1.0",
+  "to_ref": "v3.2.0",
+  "base_url": "https://github.com/synthetic/small-demo",
+  "commits": [
+    {
+      "sha": "e512dc87498617a63d9760c86d15d65ce9fb5f6d",
+      "parents": [
+        "5e540c743bfe259f0d831588d2edc9aa9833a28d"
+      ],
+      "date": "2026-08-01T10:00:00Z",
+      "subject": "feat(core): add a plugin registry",
+      "body": "",
+      "files": [
+        {
+          "path": "src/core/registry.ts",
+          "added": 28,
+          "deleted": 0
+        }
+      ]
+    },
+    {
+      "sha": "bbacaac263e0012d96e8ef8795cab5fefd241765",
+      "parents": [
+        "e512dc87498617a63d9760c86d15d65ce9fb5f6d"
+      ],
+      "date": "2026-08-01T13:00:00Z",
+      "subject": "fix(core): guard against a missing plugin name",
+      "body": "",
+      "files": [
+        {
+          "path": "src/core/registry.ts",
+          "added": 28,
+          "deleted": 0
+        }
+      ]
+    },
+    {
+      "sha": "718e2d225b2074a1877076696a032db538f6f932",
+      "parents": [
+        "bbacaac263e0012d96e8ef8795cab5fefd241765"
+      ],
+      "date": "2026-08-01T16:00:00Z",
+      "subject": "docs: add a guide to writing plugins",
+      "body": "",
+      "files": [
+        {
+          "path": "docs/plugins.md",
+          "added": 23,
+          "deleted": 0
+        }
+      ]
+    },
+    {
+      "sha": "8f3574aaa9f7c1bda7c24f818923c7703a0c3e2d",
+      "parents": [
+        "718e2d225b2074a1877076696a032db538f6f932"
+      ],
+      "date": "2026-08-01T19:00:00Z",
+      "subject": "chore: bump typescript",
+      "body": "",
+      "files": [
+        {
+          "path": "package.json",
+          "added": 20,
+          "deleted": 2
+        }
+      ]
+    },
+    {
+      "sha": "832f6198f2d41ed88be0e6c1be92f42d860bc1a9",
+      "parents": [
+        "8f3574aaa9f7c1bda7c24f818923c7703a0c3e2d"
+      ],
+      "date": "2026-08-01T22:00:00Z",
+      "subject": "feat(cli): add an init command (#201)",
+      "body": "",
+      "files": [
+        {
+          "path": "src/cli/init.ts",
+          "added": 23,
+          "deleted": 0
+        }
+      ]
+    },
+    {
+      "sha": "fdcebe442278f902a692164922a71e9e6ed46443",
+      "parents": [
+        "832f6198f2d41ed88be0e6c1be92f42d860bc1a9"
+      ],
+      "date": "2026-08-02T01:00:00Z",
+      "subject": "fix(cli): quote paths in generated scripts (#202)",
+      "body": "",
+      "files": [
+        {
+          "path": "src/cli/scripts.ts",
+          "added": 26,
+          "deleted": 3
+        }
+      ]
+    },
+    {
+      "sha": "ae52b0a625a52c38a70b754a3b8960c2b06cc5ba",
+      "parents": [
+        "fdcebe442278f902a692164922a71e9e6ed46443"
+      ],
+      "date": "2026-08-02T04:00:00Z",
+      "subject": "perf(core): memoize plugin lookups",
+      "body": "",
+      "files": [
+        {
+          "path": "src/core/lookup.ts",
+          "added": 26,
+          "deleted": 3
+        }
+      ]
+    },
+    {
+      "sha": "8274a871fc46ce97baa05aa9df020e88786bd6b5",
+      "parents": [
+        "ae52b0a625a52c38a70b754a3b8960c2b06cc5ba"
+      ],
+      "date": "2026-08-02T07:00:00Z",
+      "subject": "test(core): cover plugin lookups",
+      "body": "",
+      "files": [
+        {
+          "path": "tests/core/lookup.test.ts",
+          "added": 33,
+          "deleted": 0
+        }
+      ]
+    },
+    {
+      "sha": "ca838c168a9bcd08bce48018b3fe1c5686044330",
+      "parents": [
+        "8274a871fc46ce97baa05aa9df020e88786bd6b5"
+      ],
+      "date": "2026-08-02T10:00:00Z",
+      "subject": "feat(config): accept YAML config files",
+      "body": "",
+      "files": [
+        {
+          "path": "src/config/yaml.ts",
+          "added": 26,
+          "deleted": 3
+        }
+      ]
+    },
+    {
+      "sha": "fe97fae579cb5ab9cb265cfd3270f43ecb0429f6",
+      "parents": [
+        "ca838c168a9bcd08bce48018b3fe1c5686044330"
+      ],
+      "date": "2026-08-02T13:00:00Z",
+      "subject": "fix(config): keep comments when rewriting config",
+      "body": "",
+      "files": [
+        {
+          "path": "src/config/write.ts",
+          "added": 27,
+          "deleted": 4
+        }
+      ]
+    },
+    {
+      "sha": "19f774bb0aefbfc3a16d49e5490d4ff6979b99d1",
+      "parents": [
+        "fe97fae579cb5ab9cb265cfd3270f43ecb0429f6"
+      ],
+      "date": "2026-08-02T16:00:00Z",
+      "subject": "ci: add a lint job",
+      "body": "",
+      "files": [
+        {
+          "path": ".github/workflows/lint.yml",
+          "added": 34,
+          "deleted": 1
+        }
+      ]
+    },
+    {
+      "sha": "0fbd5e73c8807495f743eb71171b5c3d8f77d647",
+      "parents": [
+        "19f774bb0aefbfc3a16d49e5490d4ff6979b99d1"
+      ],
+      "date": "2026-08-02T19:00:00Z",
+      "subject": "refactor(core): rename internal hooks",
+      "body": "",
+      "files": [
+        {
+          "path": "src/core/hooks.ts",
+          "added": 25,
+          "deleted": 2
+        }
+      ]
+    },
+    {
+      "sha": "22306f9f6add445b68deec0eb34a4fd9754238cc",
+      "parents": [
+        "0fbd5e73c8807495f743eb71171b5c3d8f77d647"
+      ],
+      "date": "2026-08-02T22:00:00Z",
+      "subject": "feat(api): expose a health endpoint (#205)",
+      "body": "",
+      "files": [
+        {
+          "path": "src/api/health.ts",
+          "added": 25,
+          "deleted": 2
+        }
+      ]
+    },
+    {
+      "sha": "e9d7060943cb2725d51d952a83d977b229fc6157",
+      "parents": [
+        "22306f9f6add445b68deec0eb34a4fd9754238cc"
+      ],
+      "date": "2026-08-03T01:00:00Z",
+      "subject": "fix(api): set cache headers on static files",
+      "body": "",
+      "files": [
+        {
+          "path": "src/api/static.ts",
+          "added": 25,
+          "deleted": 2
+        }
+      ]
+    },
+    {
+      "sha": "7046b037c7b03d4a5d3503a86eae09585bfb5419",
+      "parents": [
+        "e9d7060943cb2725d51d952a83d977b229fc6157"
+      ],
+      "date": "2026-08-03T04:00:00Z",
+      "subject": "style: sort imports",
+      "body": "",
+      "files": [
+        {
+          "path": "src/index.ts",
+          "added": 20,
+          "deleted": 2
+        }
+      ]
+    },
+    {
+      "sha": "4c8f21744d8c34d927a0f03752bfba8aaa483d9d",
+      "parents": [
+        "7046b037c7b03d4a5d3503a86eae09585bfb5419"
+      ],
+      "date": "2026-08-03T07:00:00Z",
+      "subject": "feat(log): add a JSON log format",
+      "body": "",
+      "files": [
+        {
+          "path": "src/log/json.ts",
+          "added": 23,
+          "deleted": 0
+        }
+      ]
+    },
+    {
+      "sha": "6c4fb3dbbe58a58d1bb0d182a3b8a973b6af6553",
+      "parents": [
+        "4c8f21744d8c34d927a0f03752bfba8aaa483d9d"
+      ],
+      "date": "2026-08-03T10:00:00Z",
+      "subject": "fix(log): flush logs on exit",
+      "body": "",
+      "files": [
+        {
+          "path": "src/log/flush.ts",
+          "added": 24,
+          "deleted": 1
+        }
+      ]
+    },
+    {
+      "sha": "b28304e6c19405391863aa0b8197b265d10a0031",
+      "parents": [
+        "6c4fb3dbbe58a58d1bb0d182a3b8a973b6af6553"
+      ],
+      "date": "2026-08-03T13:00:00Z",
+      "subject": "perf(log): batch log writes",
+      "body": "",
+      "files": [
+        {
+          "path": "src/log/batch.ts",
+          "added": 24,
+          "deleted": 1
+        }
+      ]
+    },
+    {
+      "sha": "ea658585e6c5e9241fe28ffaa0f0f7dd84e69f9b",
+      "parents": [
+        "b28304e6c19405391863aa0b8197b265d10a0031"
+      ],
+      "date": "2026-08-03T16:00:00Z",
+      "subject": "build: emit source maps",
+      "body": "",
+      "files": [
+        {
+          "path": "vite.config.ts",
+          "added": 22,
+          "deleted": 4
+        }
+      ]
+    },
+    {
+      "sha": "7217a202f477c673e890300ca9d0244f929c6850",
+      "parents": [
+        "ea658585e6c5e9241fe28ffaa0f0f7dd84e69f9b"
+      ],
+      "date": "2026-08-03T19:00:00Z",
+      "subject": "feat(ui): add a compact density setting",
+      "body": "",
+      "files": [
+        {
+          "path": "src/ui/density.ts",
+          "added": 25,
+          "deleted": 2
+        }
+      ]
+    },
+    {
+      "sha": "f1fdf60df711ac0d6db733d4a79a1b71ae7f4cee",
+      "parents": [
+        "7217a202f477c673e890300ca9d0244f929c6850"
+      ],
+      "date": "2026-08-03T22:00:00Z",
+      "subject": "feat(export): add a PDF exporter",
+      "body": "",
+      "files": [
+        {
+          "path": "src/export/pdf.ts",
+          "added": 25,
+          "deleted": 2
+        }
+      ]
+    },
+    {
+      "sha": "d8fa578c6f157019a6b78415bf66af54c8cefb5e",
+      "parents": [
+        "f1fdf60df711ac0d6db733d4a79a1b71ae7f4cee"
+      ],
+      "date": "2026-08-04T01:00:00Z",
+      "subject": "fix(export): embed fonts in PDF output",
+      "body": "",
+      "files": [
+        {
+          "path": "src/export/pdf.ts",
+          "added": 25,
+          "deleted": 2
+        }
+      ]
+    },
+    {
+      "sha": "16117fa10a3b8fe3eae9654deee18c3f281e71b3",
+      "parents": [
+        "7217a202f477c673e890300ca9d0244f929c6850"
+      ],
+      "date": "2026-08-04T04:00:00Z",
+      "subject": "fix(ui): align toolbar icons",
+      "body": "",
+      "files": [
+        {
+          "path": "src/ui/toolbar.ts",
+          "added": 25,
+          "deleted": 2
+        }
+      ]
+    },
+    {
+      "sha": "582cea7e4f282e27f7edb29759be77fd69b3b18a",
+      "parents": [
+        "16117fa10a3b8fe3eae9654deee18c3f281e71b3",
+        "d8fa578c6f157019a6b78415bf66af54c8cefb5e"
+      ],
+      "date": "2026-08-04T07:00:00Z",
+      "subject": "Merge pull request #212 from synthetic/pdf-export",
+      "body": "Add a PDF exporter",
+      "files": []
+    },
+    {
+      "sha": "20d6338a9e5e01afbdb844a9ddc915a04d8ee6c1",
+      "parents": [
+        "582cea7e4f282e27f7edb29759be77fd69b3b18a"
+      ],
+      "date": "2026-08-04T10:00:00Z",
+      "subject": "fix(ui): restore scroll position on back",
+      "body": "",
+      "files": [
+        {
+          "path": "src/ui/scroll.ts",
+          "added": 24,
+          "deleted": 1
+        }
+      ]
+    },
+    {
+      "sha": "91d473770a118cbd91cc53a393c35d469a179ee2",
+      "parents": [
+        "20d6338a9e5e01afbdb844a9ddc915a04d8ee6c1"
+      ],
+      "date": "2026-08-04T13:00:00Z",
+      "subject": "feat(core)!: drop Node 18 support",
+      "body": "",
+      "files": [
+        {
+          "path": "src/core/engine.ts",
+          "added": 26,
+          "deleted": 3
+        }
+      ]
+    },
+    {
+      "sha": "2a6b6cbe03a808fb9a28614319d89d27044fa6ba",
+      "parents": [
+        "91d473770a118cbd91cc53a393c35d469a179ee2"
+      ],
+      "date": "2026-08-04T16:00:00Z",
+      "subject": "fix(core): report plugin load errors once",
+      "body": "",
+      "files": [
+        {
+          "path": "src/core/errors.ts",
+          "added": 26,
+          "deleted": 3
+        }
+      ]
+    },
+    {
+      "sha": "fe13e6a6cf27b404ba0b69230b10fe815b93937f",
+      "parents": [
+        "2a6b6cbe03a808fb9a28614319d89d27044fa6ba"
+      ],
+      "date": "2026-08-04T19:00:00Z",
+      "subject": "docs(api): document the health endpoint",
+      "body": "",
+      "files": [
+        {
+          "path": "docs/api.md",
+          "added": 19,
+          "deleted": 1
+        }
+      ]
+    },
+    {
+      "sha": "b8e750359a8b6611e4e99ea57687d9834ed65350",
+      "parents": [
+        "fe13e6a6cf27b404ba0b69230b10fe815b93937f"
+      ],
+      "date": "2026-08-04T22:00:00Z",
+      "subject": "feat(cli): add a --dry-run flag to deploy",
+      "body": "",
+      "files": [
+        {
+          "path": "src/cli/deploy.ts",
+          "added": 25,
+          "deleted": 2
+        }
+      ]
+    },
+    {
+      "sha": "e0b2a8f9f0484a6d38dbab236824747596b2e3bc",
+      "parents": [
+        "b8e750359a8b6611e4e99ea57687d9834ed65350"
+      ],
+      "date": "2026-08-05T01:00:00Z",
+      "subject": "fix(cli): exit non-zero when deploy fails",
+      "body": "",
+      "files": [
+        {
+          "path": "src/cli/deploy.ts",
+          "added": 25,
+          "deleted": 2
+        }
+      ]
+    },
+    {
+      "sha": "16cec550ca7353ca811c0e0ef1dfe53ddd5d0dab",
+      "parents": [
+        "e0b2a8f9f0484a6d38dbab236824747596b2e3bc"
+      ],
+      "date": "2026-08-05T04:00:00Z",
+      "subject": "perf(cli): start faster by lazy-loading commands",
+      "body": "",
+      "files": [
+        {
+          "path": "src/cli/index.ts",
+          "added": 24,
+          "deleted": 1
+        }
+      ]
+    },
+    {
+      "sha": "8a75e599ea66c75c59c8e835d3395540d518ecef",
+      "parents": [
+        "16cec550ca7353ca811c0e0ef1dfe53ddd5d0dab"
+      ],
+      "date": "2026-08-05T07:00:00Z",
+      "subject": "chore(release): prepare 3.2.0",
+      "body": "",
+      "files": [
+        {
+          "path": "CHANGELOG.md",
+          "added": 20,
+          "deleted": 2
+        }
+      ]
+    },
+    {
+      "sha": "d908b9d61639efa756638d4ca3e986ec5c638f1a",
+      "parents": [
+        "8a75e599ea66c75c59c8e835d3395540d518ecef"
+      ],
+      "date": "2026-08-05T10:00:00Z",
+      "subject": "feat(auth): add OAuth device flow",
+      "body": "",
+      "files": [
+        {
+          "path": "src/auth/device.ts",
+          "added": 26,
+          "deleted": 3
+        }
+      ]
+    },
+    {
+      "sha": "30de63e0daed681def932a82b81dabd58993b7f1",
+      "parents": [
+        "d908b9d61639efa756638d4ca3e986ec5c638f1a"
+      ],
+      "date": "2026-08-05T13:00:00Z",
+      "subject": "fix(auth): refresh tokens before they expire",
+      "body": "",
+      "files": [
+        {
+          "path": "src/auth/refresh.ts",
+          "added": 27,
+          "deleted": 4
+        }
+      ]
+    },
+    {
+      "sha": "f4a315afd38ca7dde595014c38bf1d8d2db60a3b",
+      "parents": [
+        "30de63e0daed681def932a82b81dabd58993b7f1"
+      ],
+      "date": "2026-08-05T16:00:00Z",
+      "subject": "test(auth): cover the device flow",
+      "body": "",
+      "files": [
+        {
+          "path": "tests/auth/device.test.ts",
+          "added": 33,
+          "deleted": 0
+        }
+      ]
+    },
+    {
+      "sha": "5c39cd6ebacba9fc50a74970f0265aab722bdcf6",
+      "parents": [
+        "f4a315afd38ca7dde595014c38bf1d8d2db60a3b"
+      ],
+      "date": "2026-08-05T19:00:00Z",
+      "subject": "feat(cache): add an LRU cache for templates",
+      "body": "",
+      "files": [
+        {
+          "path": "src/cache/lru.ts",
+          "added": 24,
+          "deleted": 1
+        }
+      ]
+    },
+    {
+      "sha": "0bc3f962767c9dd52ec65fa58eddd13ecb201ddf",
+      "parents": [
+        "5c39cd6ebacba9fc50a74970f0265aab722bdcf6"
+      ],
+      "date": "2026-08-05T22:00:00Z",
+      "subject": "fix(cache): evict entries on config change",
+      "body": "",
+      "files": [
+        {
+          "path": "src/cache/evict.ts",
+          "added": 26,
+          "deleted": 3
+        }
+      ]
+    },
+    {
+      "sha": "251418be4620b0d318d94c19b45ffea38940d649",
+      "parents": [
+        "0bc3f962767c9dd52ec65fa58eddd13ecb201ddf"
+      ],
+      "date": "2026-08-06T01:00:00Z",
+      "subject": "feat(templates): support partials",
+      "body": "",
+      "files": [
+        {
+          "path": "src/templates/partials.ts",
+          "added": 33,
+          "deleted": 0
+        }
+      ]
+    },
+    {
+      "sha": "e2b2c295dcd5efbab667db88746c63df1b637fca",
+      "parents": [
+        "251418be4620b0d318d94c19b45ffea38940d649"
+      ],
+      "date": "2026-08-06T04:00:00Z",
+      "subject": "fix(templates): escape HTML in variables",
+      "body": "",
+      "files": [
+        {
+          "path": "src/templates/escape.ts",
+          "added": 31,
+          "deleted": 3
+        }
+      ]
+    },
+    {
+      "sha": "490bf5c7b775ff4561cfd9cf09832e6287737f40",
+      "parents": [
+        "e2b2c295dcd5efbab667db88746c63df1b637fca"
+      ],
+      "date": "2026-08-06T07:00:00Z",
+      "subject": "perf(templates): precompile templates",
+      "body": "",
+      "files": [
+        {
+          "path": "src/templates/compile.ts",
+          "added": 32,
+          "deleted": 4
+        }
+      ]
+    },
+    {
+      "sha": "5992ad32ff7c5edb4ffeeb33cb739f99d4119637",
+      "parents": [
+        "490bf5c7b775ff4561cfd9cf09832e6287737f40"
+      ],
+      "date": "2026-08-06T10:00:00Z",
+      "subject": "ci: test on Windows",
+      "body": "",
+      "files": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "added": 32,
+          "deleted": 4
+        }
+      ]
+    },
+    {
+      "sha": "48556d2ac0cbca1c4669f18d8ba0549059028b78",
+      "parents": [
+        "5992ad32ff7c5edb4ffeeb33cb739f99d4119637"
+      ],
+      "date": "2026-08-06T13:00:00Z",
+      "subject": "feat(io): watch files for changes",
+      "body": "",
+      "files": [
+        {
+          "path": "src/io/watch.ts",
+          "added": 23,
+          "deleted": 0
+        }
+      ]
+    },
+    {
+      "sha": "1cad52bde87a1fd1d14a3d4b5e5333d4f55e0634",
+      "parents": [
+        "48556d2ac0cbca1c4669f18d8ba0549059028b78"
+      ],
+      "date": "2026-08-06T16:00:00Z",
+      "subject": "fix(io): debounce change events",
+      "body": "",
+      "files": [
+        {
+          "path": "src/io/watch.ts",
+          "added": 23,
+          "deleted": 0
+        }
+      ]
+    },
+    {
+      "sha": "ba5ad406ad95492cfc6d4eb20cb1d726a2738962",
+      "parents": [
+        "1cad52bde87a1fd1d14a3d4b5e5333d4f55e0634"
+      ],
+      "date": "2026-08-06T19:00:00Z",
+      "subject": "refactor(io): share the path helpers",
+      "body": "",
+      "files": [
+        {
+          "path": "src/io/paths.ts",
+          "added": 23,
+          "deleted": 0
+        }
+      ]
+    },
+    {
+      "sha": "417e6b4d6c83bee310093ae21925b8e433095e63",
+      "parents": [
+        "ba5ad406ad95492cfc6d4eb20cb1d726a2738962"
+      ],
+      "date": "2026-08-06T22:00:00Z",
+      "subject": "feat(net): add proxy support",
+      "body": "",
+      "files": [
+        {
+          "path": "src/net/proxy.ts",
+          "added": 24,
+          "deleted": 1
+        }
+      ]
+    },
+    {
+      "sha": "359aa88270dc8b96e8d377b22723f1275dc636d3",
+      "parents": [
+        "417e6b4d6c83bee310093ae21925b8e433095e63"
+      ],
+      "date": "2026-08-07T01:00:00Z",
+      "subject": "fix(net): honour NO_PROXY",
+      "body": "",
+      "files": [
+        {
+          "path": "src/net/proxy.ts",
+          "added": 24,
+          "deleted": 1
+        }
+      ]
+    },
+    {
+      "sha": "656d913ad6b86feb6f670105f78e2ecea6f7b170",
+      "parents": [
+        "359aa88270dc8b96e8d377b22723f1275dc636d3"
+      ],
+      "date": "2026-08-07T04:00:00Z",
+      "subject": "feat(core): add lifecycle events for plugins",
+      "body": "",
+      "files": [
+        {
+          "path": "src/core/events.ts",
+          "added": 26,
+          "deleted": 3
+        }
+      ]
+    },
+    {
+      "sha": "ad4e56250d777fb642f4ac7f459219705ee8153a",
+      "parents": [
+        "656d913ad6b86feb6f670105f78e2ecea6f7b170"
+      ],
+      "date": "2026-08-07T07:00:00Z",
+      "subject": "fix(core): remove listeners on dispose",
+      "body": "",
+      "files": [
+        {
+          "path": "src/core/events.ts",
+          "added": 26,
+          "deleted": 3
+        }
+      ]
+    },
+    {
+      "sha": "73ce032bcb9e4179e2a1a919142beed4cbf51c3c",
+      "parents": [
+        "ad4e56250d777fb642f4ac7f459219705ee8153a"
+      ],
+      "date": "2026-08-07T10:00:00Z",
+      "subject": "docs: update the changelog policy",
+      "body": "",
+      "files": [
+        {
+          "path": "docs/changelog.md",
+          "added": 25,
+          "deleted": 2
+        }
+      ]
+    },
+    {
+      "sha": "9db21d5b9c7473bab8be7cf22ee6c3f1f67d62c6",
+      "parents": [
+        "73ce032bcb9e4179e2a1a919142beed4cbf51c3c"
+      ],
+      "date": "2026-08-07T13:00:00Z",
+      "subject": "feat(cli): colorize diff output",
+      "body": "",
+      "files": [
+        {
+          "path": "src/cli/diff.ts",
+          "added": 23,
+          "deleted": 0
+        }
+      ]
+    },
+    {
+      "sha": "24c86021ca875ed93271eb23471f8ef5a9d4d531",
+      "parents": [
+        "9db21d5b9c7473bab8be7cf22ee6c3f1f67d62c6"
+      ],
+      "date": "2026-08-07T16:00:00Z",
+      "subject": "fix(cli): respect NO_COLOR",
+      "body": "",
+      "files": [
+        {
+          "path": "src/cli/color.ts",
+          "added": 24,
+          "deleted": 1
+        }
+      ]
+    },
+    {
+      "sha": "b8ddf6afd6f210d3003d11b83b11820ceb1cba95",
+      "parents": [
+        "24c86021ca875ed93271eb23471f8ef5a9d4d531"
+      ],
+      "date": "2026-08-07T19:00:00Z",
+      "subject": "perf(io): read files in parallel",
+      "body": "",
+      "files": [
+        {
+          "path": "src/io/read.ts",
+          "added": 22,
+          "deleted": 4
+        }
+      ]
+    },
+    {
+      "sha": "735ce437dcb16e3f19ff3d482ce77a9458e23380",
+      "parents": [
+        "b8ddf6afd6f210d3003d11b83b11820ceb1cba95"
+      ],
+      "date": "2026-08-07T22:00:00Z",
+      "subject": "feat(api): add rate limiting",
+      "body": "",
+      "files": [
+        {
+          "path": "src/api/limit.ts",
+          "added": 24,
+          "deleted": 1
+        }
+      ]
+    },
+    {
+      "sha": "7479703e8e8e6bfe5a376a718c864c17131221c4",
+      "parents": [
+        "735ce437dcb16e3f19ff3d482ce77a9458e23380"
+      ],
+      "date": "2026-08-08T01:00:00Z",
+      "subject": "fix(api): return 429 with Retry-After",
+      "body": "",
+      "files": [
+        {
+          "path": "src/api/limit.ts",
+          "added": 24,
+          "deleted": 1
+        }
+      ]
+    },
+    {
+      "sha": "d54333bdffe12c370b5fce8d697747e123696fd9",
+      "parents": [
+        "7479703e8e8e6bfe5a376a718c864c17131221c4"
+      ],
+      "date": "2026-08-08T04:00:00Z",
+      "subject": "chore: tidy scripts",
+      "body": "",
+      "files": [
+        {
+          "path": "scripts/dev.sh",
+          "added": 22,
+          "deleted": 4
+        }
+      ]
+    },
+    {
+      "sha": "de5c03eaf0c20af42206007f318ac9a74a71ba68",
+      "parents": [
+        "d54333bdffe12c370b5fce8d697747e123696fd9"
+      ],
+      "date": "2026-08-08T07:00:00Z",
+      "subject": "feat(ui): add keyboard shortcuts help",
+      "body": "",
+      "files": [
+        {
+          "path": "src/ui/help.ts",
+          "added": 22,
+          "deleted": 4
+        }
+      ]
+    },
+    {
+      "sha": "1d978457ac8cb27126689aaadd32d840f4502108",
+      "parents": [
+        "de5c03eaf0c20af42206007f318ac9a74a71ba68"
+      ],
+      "date": "2026-08-08T10:00:00Z",
+      "subject": "fix(ui): trap focus in dialogs",
+      "body": "",
+      "files": [
+        {
+          "path": "src/ui/dialog.ts",
+          "added": 24,
+          "deleted": 1
+        }
+      ]
+    },
+    {
+      "sha": "db6a021ef6df6044f8ae6ad9cdfc8258f0dcf170",
+      "parents": [
+        "1d978457ac8cb27126689aaadd32d840f4502108"
+      ],
+      "date": "2026-08-08T13:00:00Z",
+      "subject": "feat(core): add a plugin sandbox (#230)",
+      "body": "",
+      "files": [
+        {
+          "path": "src/core/sandbox.ts",
+          "added": 27,
+          "deleted": 4
+        }
+      ]
+    },
+    {
+      "sha": "4aa15364fd91bc44213c0c08f61b3fc52781dcc1",
+      "parents": [
+        "db6a021ef6df6044f8ae6ad9cdfc8258f0dcf170"
+      ],
+      "date": "2026-08-08T16:00:00Z",
+      "subject": "fix(core): time out slow plugins (#231)",
+      "body": "",
+      "files": [
+        {
+          "path": "src/core/timeout.ts",
+          "added": 27,
+          "deleted": 4
+        }
+      ]
+    },
+    {
+      "sha": "cef4e85d2798ca096fab53625e116b896d1b3374",
+      "parents": [
+        "4aa15364fd91bc44213c0c08f61b3fc52781dcc1"
+      ],
+      "date": "2026-08-08T19:00:00Z",
+      "subject": "Revert \"feat(cli): colorize diff output\"",
+      "body": "This reverts commit 9db21d5b9c7473bab8be7cf22ee6c3f1f67d62c6.",
+      "files": [
+        {
+          "path": "src/cli/diff.ts",
+          "added": 23,
+          "deleted": 0
+        }
+      ]
+    }
+  ]
+}
