@@ -1,95 +1,205 @@
 # Deferred validation
 
-This repository is built under static-only construction rules: source is written and inspected, never executed.
-Each row is a check that has **not** been run, why, and exactly how to run it at activation. Run the rows in order;
-a row is closed only when its command passes on a clean checkout.
+**Every check below is pending.** No dependency install, typecheck, lint, test runner, application, browser,
+Git exporter, SQL, auth flow, model call, deployment or build has run. Source-only Dirty Mode prevented execution.
+Earlier milestones used syntax-only TypeScript parsing, JSON parsing and source/import/name inspection; these
+are not typechecking, passing assertions, runtime evidence or release acceptance.
 
-Static checks that were run during construction: a syntax-only parse of every `.ts` file (types stripped, parsed,
-never executed) and `JSON.parse` of every `.json` file. Neither is a type check.
+Run from the product Git root in the order below only after the applicable activation is authorized. Resolve a
+failure before dependent checks; record the revision, tool versions, command, result and durable non-secret
+receipt. Do not repeat a passed check without a source/config/environment change or unresolved concern.
+[BOLT-HANDOFF.md](../BOLT-HANDOFF.md) is the **single** target/resource/settings/auth inventory and contains all
+spec acceptance rows. This file owns validation order, not a second provisioning inventory. Inspection-only
+Bolt import does not authorize the infrastructure or paid steps below.
 
-| # | What | Why deferred | Exact command / steps |
-|---|---|---|---|
-| 1 | Install dependencies and commit the lockfile | Installs are not allowed during construction; `package.json` pins exact versions but no `package-lock.json` exists | `npm install` (Node >= 22.18), confirm every pinned version resolved as written (`npm ls --depth=0`), then commit `package-lock.json`; afterwards use `npm ci` |
-| 2 | Pinned versions exist and are compatible | Versions were chosen from memory, not resolved against the registry | Part of row 1: if a version fails to resolve, pick the nearest published exact version, record it here, and re-run rows 3-6 |
-| 3 | Type check | Not run | `npm run typecheck` (runs `tsc -p tsconfig.json` and `tsc -p tsconfig.node.json`) |
-| 4 | Lint | Not run | `npm run lint` |
-| 5 | Unit, component and static contract tests | Written, never executed | `npm test` (`vitest run`); M1/M2 core and M3 `tests/ui/` regressions plus `tests/static/` |
-| 6 | Production build | Not run; M3 now supplies `src/main.tsx`, styles and Vite-compatible raw fixture/JSON recording imports | `npm run build` |
-| 7 | `@shared` alias resolution | Alias declared in `tsconfig.json` and `vite.config.ts` (inherited by Vitest) but never resolved by a tool | Covered by rows 3, 5 and 6 once a file under `src/ui`, `src/data`, `src/services` or `src/lib` imports `@shared/...` (M3) |
-| 8 | Node scripts run without an alias | `src/core` and `scripts` import the shared core by relative path so Node's native type stripping can run them; untested | `node scripts/eval.ts --split synthetic` after M5; any `ERR_MODULE_NOT_FOUND` for `@shared` means an alias leaked into `src/core` |
-| 9 | WebCrypto in every runtime | `hash.ts` uses `crypto.subtle`; assumed global in browsers, Node >= 22 (Vitest node environment) and Deno | Row 5 covers Node; `deno check supabase/functions/generate-notes/index.ts` and a deployed call cover Deno (M4) |
-| 10 | Markdown escaping in real renderers | Escaping is asserted on strings only; GFM autolink and math behaviour not observed in a renderer | Render the output of `tests/unit/export.markdown.test.ts` cases with a CommonMark+GFM renderer (e.g. GitHub's Markdown preview of a release body in a private scratch repo, or `npx marked --gfm`) and confirm no heading, link, image, HTML, autolink, emphasis, table or math appears |
-| 11 | Date parsing of invalid calendar days | `isCalendarDay` round-trips through `Date`; engines differ (roll-over vs Invalid Date) but both must be refused | Row 5 (`refuses invalid export meta`); also run once in a browser |
-| 12 | `config/limits.json` mirrors `LIMITS` | Asserted by a test that has not run | Row 5 (`config/limits.json mirror`) |
-| 13 | Edge price-source deployment parity | M4 reads `MODEL_PRICES_JSON` explicitly, avoiding a root-file bundle dependency. The single operator-authored source remains `config/prices.json` (empty models until activation); no dated price table is duplicated in code | At activation choose a supported immutable provider model and official dated prices, update `config/prices.json`, and copy that exact JSON into the server-only `MODEL_PRICES_JSON` setting. Compare deployed JSON/model/rates/date byte-for-byte with that file, then deploy and confirm unknown/missing/undated prices return 503 without a ledger reservation or model call |
-| 14 | M2 deterministic contracts and trap expectations | Test source covers all trap outcomes and reason labels, 400-unit refusal, 40-unit/60,000-code-point chunks, revert order, citation provenance, literal classes, injection independence, global duplicates and ruling identity/restore rules; assertions have never run | After row 1: `npm test -- tests/unit/gitfacts.conventional.test.ts tests/unit/gitfacts.fixtures.test.ts tests/unit/gitfacts.boundaries.test.ts tests/unit/support.literals.test.ts tests/unit/validate.test.ts tests/unit/rulings.replay.test.ts tests/unit/model-output.test.ts tests/unit/baselines.test.ts tests/unit/m1-followups.test.ts tests/static/no-forbidden-fields.test.ts tests/static/validator-no-instruction-branches.test.ts` |
-| 15 | Exact-hash mock replay and prompt snapshot parity | Two synthetic-authored outputs are indexed by UTF-8 SHA-256 of adjacent `.prompt.txt` snapshots. Snapshot byte hashes were checked statically; snapshots were prepared by standalone stdlib JSON serialization from fixture data without importing or executing application modules. The actual facts/units/prompt pipeline has never been executed. No fixture/chunk fallback exists; any mismatch is an explicit `replay_miss`. Preserved legacy named recordings are not selected by INDEX.json | `npm test -- tests/unit/prompt.mock.test.ts`. Compare the authored snapshot against `buildPrompt` for each chunk; reconcile any difference before accepting replay. INDEX.json documents field order, framing and hash recipe; provenance remains `synthetic-authored`, never a live-model claim |
-| 16 | Git exporter framing and safe invocation on real Git | Only source inspection and authored framing/argv tests; Git exporter has never run. Refs beyond the conservative pattern remain subject to Git's own ref rules | `npm test -- tests/unit/export-git-log.test.ts`, then in a trusted checkout `node scripts/export-git-log.ts --repo . --from HEAD --to HEAD` (empty range). On a trusted synthetic repo with binary/rename commits, repeat with its known tags and `--outside 5`, then upload that output and inspect counts; no network or credentials are needed |
-| 17 | M3 demo components and repository/generation seams | Source-only component and integration assertions; no React render, event, WebCrypto pipeline or test assertion has executed | After row 1: `npm test -- tests/ui/mode-keyboard.test.ts tests/ui/review.test.tsx tests/ui/export.test.tsx tests/ui/memory-generation.test.ts tests/ui/app.test.tsx`; then `npm run typecheck` and `npm run lint` |
-| 18 | Keyless browser journey, layout and accessibility | Browser/dev-server use is forbidden during construction. Modal focus/inert behaviour is stubbed in jsdom tests and needs a real browser | After registering the port with the canonical agent-ports skill, run `npm run dev -- --host 127.0.0.1 --port <claimed-port> --strictPort`. Open `http://127.0.0.1:<claimed-port>/?demo=1`: load Synthetic traps, inspect the rejected body and redaction counts, acknowledge omissions, inspect Internal, generate, inspect all four tabs, edit and remove a bullet, add a literal, restore the low-support bullet with a reason, confirm the phantom drop refuses restore, enter version/date, approve and download all three files. Exercise Tab, arrow keys, j/k, 1–4, e/r/x/a/Shift+A/d/?; verify text fields do not trigger shortcuts, dialogs trap/restore focus, and all actions have labelled buttons. Inspect at 375px, 768px and 1440px widths and with reduced motion |
-| 19 | Approval invalidation, effect-boundary export checks and Blob downloads in a browser | Hash/gate and URL lifecycle source inspected only; download behaviour has not been observed | During row 18, confirm download controls stay disabled until approval matches; change each metadata field and perform edit/remove/add/restore, confirming approval clears immediately. Download `release-notes.md`, `release-notes.json`, `dropped.json`; inspect full SHA citations, visible human attestation, six footer counts and dropped request evidence. Confirm changing inputs during an async check never downloads a stale draft |
-| 20 | Setup and exact-replay miss states | No environment setup or browser session has run | During row 18, inspect `/?demo=0` without public configuration and with one public value missing: show setup. Inspect both public values configured: show the M4 auth view and keep uploads disabled until signed in. `/?demo=1` must stay offline regardless of public config. Upload an altered synthetic fixture and generate: show an explicit replay miss and a failed mock ledger row, never an empty success or live fallback. Run `npm test -- tests/ui/memory-generation.test.ts` for request restrictions surviving text-only edits and repair via explicit valid citations |
+## Local dependencies and deterministic behavior
 
-M2 static construction check: 63 `.ts` files (61 source/test/script files plus the two root TypeScript configs)
-parsed with the existing syntax-only checker with zero failures; 16 product/config/fixture JSON files parsed.
-The two snapshot byte hashes match INDEX.json.
-No dependency install, typecheck, lint, test assertion, application execution, Git-export invocation, build or
-runtime/prompt-pipeline parity check was performed. These source checks do not close any deferred row.
+1. **Resolve packages and establish the lockfile.** Confirm Node satisfies `package.json` (`node --version`,
+   `npm --version`), then run `npm install` and `npm ls --depth=0`. Versions were pinned without registry
+   resolution. If an exact version is unavailable/incompatible, make a reviewed exact-version correction and
+   record it; do not quietly accept a range or pretend the original pin resolved. Validate the changed tree,
+   commit `package-lock.json`, and use `npm ci` for subsequent clean installations. No lockfile exists now.
+2. **Type, lint and authored assertions.** Run `npm run typecheck`, `npm run lint`, `npm test`, then
+   `npm run build` (intended output `dist/`). The test run must include `tests/unit/`, `tests/ui/`,
+   `tests/contract/` and `tests/static/`. `tests/static/env-names.test.ts` now has its M6 handoff input; the
+   assertion has still never executed. TSX rendering, dependency compatibility and aliases are unverified.
+   The browser/data/service/lib `@shared` alias and relative `.ts` imports from core/scripts must resolve;
+   WebCrypto must work. A syntax-only parse does not establish any of this.
+3. **Inspect deterministic test coverage and failures.** Resolve failures in parser/redaction/export,
+   `gitfacts.*`, `support.literals`, `validate`, `rulings.replay`, `model-output`, `baselines`,
+   `m1-followups` and `prompt.mock` tests before accepting the keyless path. Check all named traps in
+   `fixtures/gitlog/traps.json`, canonical reason labels/evidence, rejected-record citation provenance, zero
+   content tokens, single-digit literals, PR versus issue grouping, topological reverts, explicit cherry picks,
+   empty input, 400/401 units, 40/41 units per chunk, 60000/60001 code-point prompt chars and the limits mirror.
+   Confirm unsupported fields and author-like stored columns remain absent. Verify independent verdicts with
+   and without the injection sentence; no validator branch may classify instruction-like prose.
+4. **Verify exact replay parity.** Inspect `tests/unit/prompt.mock.test.ts` results, compare actual facts/units/
+   `buildPrompt` output against each indexed `.prompt.txt` snapshot and its UTF-8 hash in
+   `fixtures/recorded/INDEX.json`. These snapshots were prepared outside the application by static JSON
+   serialization; the actual pipeline has never run. There is no fixture-name/chunk fallback. A mismatch is
+   `replay_miss`, never an empty success. Legacy named recordings outside INDEX are not selected.
+5. **Exercise Git framing on trusted synthetic history.** Inspect `tests/unit/export-git-log.test.ts`, then in
+   a trusted checkout run `node scripts/export-git-log.ts --repo . --from HEAD --to HEAD` for an empty range.
+   In a trusted synthetic repository with binary and rename commits, run
+   `node scripts/export-git-log.ts --repo <trusted-path> --from <known-tag> --to <known-tag> --outside 5 --out <output-file>`.
+   Confirm NUL framing, binary counts as null, renamed destination paths, optional outside SHAs, no author
+   fields/trailers/emails, safe argv ordering and visible failure for invalid refs. Git decides ref validity
+   beyond the conservative regex. Do not use private data or fetch from the app.
+6. **Run keyless synthetic evaluation.** With no API keys or network access, run
+   `node scripts/eval.ts --split synthetic --seed 2901`. It writes `docs/results.md` and
+   `docs/results-synthetic.md`; inspect per-operator eligible/attempted/skipped denominators, catches/reason
+   accuracy, every named false drop/miss, typed/untyped recall and real rule-based/section-gate rows. Missing
+   exact recordings leave model rows `not yet measured`, never partial-release success. Inspect
+   `tests/unit/eval.*.test.ts` and `tests/static/eval-keyless-boundary.test.ts` results: tiny denominators,
+   zero denominators, prefix/OR recall, separate partial audit labels, seeded preconditions, split isolation,
+   recorder gating and heldout marker behavior. Unit tests use isolated markers/in-memory artifact I/O and
+   must not consume the product heldout set. Mock zero cost is not a live cost estimate.
 
-M3 source includes the offline interface, an async `RunRepository`, in-memory input sealing and event storage,
-exact-hash mock generation, request-drop provenance and ruling lineage, review dialogs, keyboard actions and
-approval-gated Blob download sources. `RequestDrop` stores `requestShas` and `chunk_index`; the live adapter must
-preserve them on save/load. `validatorForRulings(ctx, drops, initial, completeEvents)` rebuilds inherited request
-constraints before `applyRulings`, and that validator is also passed to approval and export. Editing text alone
-does not discard the original request boundary; repairing citations is rechecked with the existing validator.
-These files and assertions have not been installed, type-checked, linted, tested, built, rendered or run.
-M3 static inspection: the existing syntax-only checker parsed all 72 repository `.ts` files with zero failures;
-all 16 JSON files parsed; relative/`@shared` import targets in 25 demo and UI-test source files resolved to present
-files. CSS brace balance and absence of external style resources were checked. TSX was inspected as source only;
-no TSX parser was installed or configured. `git diff --check` reported no tracked whitespace errors.
+## Browser demo and export
 
+7. **Register a port before starting a server.** Use the canonical agent-ports skill to claim/check a local
+   port, then run `npm run dev -- --host 127.0.0.1 --port <claimed-port> --strictPort`. Open
+   `http://127.0.0.1:<claimed-port>/?demo=1`. Complete the README's Synthetic traps journey: parse report,
+   omitted `t_huge_body`, acknowledgement, Internal units/noise/reverts/mock ledger, generation, all review
+   tabs, edit/remove/literal-add, reasoned `low_support` restore and hard phantom refusal. The authored UI and
+   seam tests have never rendered or dispatched a real event.
+8. **Check keyboard/layout/accessibility and mode boundaries.** Exercise Tab, arrows, Home/End, j/k, 1-4,
+   e/r/x/a/Shift+A/d/?; typing in input/textarea/select/contenteditable must not trigger shortcuts. Verify
+   labelled buttons, selected tab/row, dialog focus trapping/inert behavior and focus restoration in a real
+   browser (jsdom stubs cannot prove it). Inspect at 375px, 768px and 1440px, zoom and reduced motion. Inspect
+   `?demo=0` with no/partial public config: setup; with both values: auth view and uploads disabled until login.
+   Explicit demo must import no Supabase runtime, touch no auth storage/client and make no Supabase/provider
+   request, even when configured. Alter an uploaded fixture and generate: explicit replay miss plus failed mock
+   ledger, no live fallback or fabricated success. Confirm a demo refresh clears in-memory review.
+9. **Verify approval at the download boundary.** Controls remain disabled until current content approval.
+   Change version, date, base URL and each review action; approval must invalidate immediately, including a
+   no-op/category-only edit. Delay async hash/approval/export work and change input mid-flight; stale drafts
+   must not download. Check hard reasons cannot be restored and soft restore needs active citations + reason.
+   Inspect `release-notes.md`, `release-notes.json`, `dropped.json`: full SHA provenance, fixed section order,
+   Security under Fixes with label, HTTPS-only code-generated links, visible `human_attested`, six distinct
+   footer counts and dropped reason/evidence/dispositions. Superseded kept edits belong to the approval payload,
+   not the dropped list. Confirm Blob/URL lifecycle and repeated downloads in the browser.
+10. **Verify actual Markdown rendering.** Render hostile escaping cases from
+    `tests/unit/export.markdown.test.ts` in a local CommonMark+GFM renderer and the intended eventual consumer.
+    Confirm no commit text becomes headings, links/images, HTML, autolinks, fences, emphasis, table or math.
+    Do not post a release as a rendering test. Check invalid calendar dates and metadata in the browser too.
 
-M4 live seam is source-present only. Nothing below has been provisioned, resolved, type-checked, linted,
-executed, tested, built, deployed or observed. `bullets` is one immutable owner generation-snapshot row per run,
-containing the full `initial_review`, `request_drops` (including `requestShas` and `chunk_index`) and `violations`.
-It is a cache owned by the user, not an attestation. Rulings remain separate complete append-only events.
-Live restoration selects an owned run and explicitly requires the original upload: the app reconstructs
-commit-level facts only after sanitized-input hash, current configuration hash and unit payload hash match.
-Stored aggregate units cannot establish which subject/body/path belongs to an individual commit and are never
-presented as enough for export revalidation. A mismatched upload/configuration is refused before replay.
-Event replay clears any earlier approval on every non-approve event, including a no-op/category-only edit;
-a later approve event can become current again. Client event time is advanced past the complete restored
-event history before saving new review actions.
+## Target inspection, edge, SQL and auth (later authorized activation)
 
-M4 construction checks: syntax-only parse of all 97 repository `.ts` files completed with zero failures;
-all 16 JSON files parsed; local relative/shared import targets in seven live integration files were present.
-`git diff --check` reported no tracked whitespace errors; a source-only trailing-whitespace scan of 112
-TS/TSX/SQL/TOML/Markdown files found none. TSX and SQL were inspected as source only. These checks neither
-execute the new assertions nor close any runtime/type/lint/deployment row below.
+11. **Inspect before any provisioning.** Use the first prompt in BOLT-HANDOFF. Verify actual provider capability,
+    connection identity, baseline/migration history, function runtime/import support and auth/key model through
+    authorized read-only access. Prepare a reviewed plan. Do not infer history from tables, replace a populated
+    connection or automatically repair its ledger. Only a later authorized provisioning run may continue below.
+12. **Resolve/check the edge separately.** Run `deno check supabase/functions/generate-notes/index.ts` in the
+    Deno dependency context; the pinned npm import has never been fetched. In an authorized disposable target,
+    deploy `generate-notes` with the handoff's JWT configuration and confirm `_shared/core/` relative imports
+    are bundled. If the platform excludes shared files, reconcile the single canonical module location and
+    both import paths; never duplicate logic or introduce browser aliases into Deno. Confirm gateway checks
+    for the actual key model while retaining handler `auth.getUser` identity verification.
+13. **Apply only pending migrations and inspect ACLs.** In the authorized disposable target use its supported
+    migration runner in handoff order. If an explicitly linked, compatible Supabase test project is selected,
+    inspect `supabase migration list --linked`, then `supabase db push --linked` for pending files only; these
+    commands are not proof of Bolt support. Inspect `pg_policies`, `information_schema.role_column_grants`,
+    `pg_proc` security/search_path/ACL and trigger definitions. Unknown/time-out outcomes require read-only
+    verification before retry. Privileged inspection bypasses RLS and cannot establish client isolation.
+14. **Use actual anon/user/service clients for boundary tests.** With users A/B confirm B cannot read or mutate
+    A's runs, units, snapshots, rulings, requests, calls or allowance. Confirm owned-draft-only unit inserts,
+    protected run updates refused, post-seal mutations refused, snapshot/ruling UPDATE/DELETE refused and actor
+    forced to JWT user. Anonymous/missing JWT and anon-key bearer generation fail; client reserve/settle calls
+    fail and only service role can invoke them after owned-run authorization. Verify foreign run is 404,
+    invalid input/chunk/acknowledgement is 400, and browser preflight/allowed/disallowed origins behave exactly
+    as inventoried. Inspect `tests/contract/` and SQL/env static test results alongside real effects.
+15. **Exercise seal parity and races.** In the disposable DB test 400/401 units, 40/41 per chunk, exactly
+    60000/60001 prompt chars including astral Unicode, missing/descending/skipped chunk indices, invalid ordinal
+    and SHA, email-like text in every stored string, omitted records/units without acknowledgement, draft text
+    changes affecting revision, and simultaneous insert/seal. An insert must commit before sealing includes it
+    or be refused after seal; never a silently changed sealed unit set. Compare SQL `left`/`char_length` with
+    JS code-point excerpt/count semantics and stable unit ordering/hash.
+16. **Verify auth and persistence in an authorized browser.** Configure the handoff's email provider,
+    confirmation, Site URL, exact confirmation/recovery redirect and CORS origins. Exercise signup/email
+    confirmation, login, session refresh, logout, recovery email and password update. Owner changes clear
+    review. Create/generate an owned run, refresh saved runs, select it, then re-upload the identical original:
+    sanitized-input/config/unit hashes must match before replay/export. A different upload or configuration
+    refuses. Inspect full `initial_review`, `request_drops`, `violations`, complete successive/category-only
+    rulings, stored metadata, approval and ledger. Preserve every RequestDrop field and request-boundary lineage
+    through save/load, text-only edits, repair and export. Original aggregate units alone are not commit evidence.
+    Verify idempotent event retry, event timestamp ordering past restored history, orphan display, earlier
+    approval invalidation and later valid approval. Owner snapshots/approvals remain records, not attestations.
 
-| # | What | Why deferred | Exact command / steps |
-|---|---|---|---|
-| 21 | M4 fake-dependency, provider and SQL/env static assertions | Tests are source only; SQL source assertions do not prove database effects | After rows 1–4: `npm test -- tests/contract/generate-notes.test.ts tests/contract/providers-live.test.ts tests/contract/supabase-repo.test.ts tests/contract/generation-live.test.ts tests/ui/request-lineage.test.ts tests/static/sql-boundaries.test.ts tests/static/env-names.test.ts tests/static/no-forbidden-fields.test.ts`. The env inventory assertion requires M6 `BOLT-HANDOFF.md`; its temporary absence is explicitly deferred, not an M4 failure |
-| 22 | Pinned edge dependency, Deno typing and bundle | Deno import `npm:@supabase/supabase-js@2.49.4` is pinned but has never been fetched; no import resolution was attempted | `deno check supabase/functions/generate-notes/index.ts`, then in an authorized disposable Supabase/Bolt project deploy `generate-notes` with `verify_jwt = true` and confirm local `.ts` imports are bundled. Do not add a browser alias or duplicate shared source to fix bundling |
-| 23 | Four migrations, grants, RLS, sealing and triggers | No database or Docker has been started | On a disposable authorized project apply the four `supabase/migrations/*.sql` files in filename order with the platform migration runner (or `supabase db push --linked` after explicitly linking that disposable project). Inspect `pg_policies`, `information_schema.role_column_grants` and `pg_proc` security/search_path/ACL. Using distinct authenticated users, confirm foreign reads/inserts fail, only owned draft units insert, protected run updates fail, post-seal unit mutations fail, rulings/snapshot update/delete fail, actor is forced to JWT user, client reserve/settle calls fail, and the service role alone can reserve/settle. Test 401 anon bearer against deployed auth.getUser |
-| 24 | Seal limits/parity and concurrent input freeze | SQL `left`/`char_length` versus JS code-point excerpt and prompt count are source-aligned, not executed | In the disposable DB test 400/401 units, 40/41 per chunk, exactly 60000/60001 prompt chars including astral Unicode, missing/descending/skipped chunk indices, bad ordinal and sha, email-like text in every stored text location, unacknowledged record/unit omissions, hash changes after draft text edits, and simultaneous insert/seal. One insert must commit before the seal includes it, or be rejected after seal; never an unnoticed sealed-unit insertion |
-| 25 | Atomic aggregate allowance/run budget and exactly-once settlement | No paid call, race or transaction has run | In disposable DB create one server-only `live_allowances` row for a test owner with a deliberately tiny operator-approved cap. Confirm no row yields 403 `live_not_allowed`; run and allowance `spent + reserved + bound` independently refuse with 402 before provider I/O. Concurrently reserve two requests on one run and requests on two runs for the same owner, then concurrently settle the same attempt twice. Query run, allowance and llm_calls: one charge and one reservation release only; a repeated settle returns the first stored attempt unchanged. Confirm <=2 attempts/request and <=2×chunk_count/run, unknown paid outcomes never auto-reissue, and completed output is returned without another reservation/call. Remove or change only disposable test data through the test project's authorized lifecycle |
-| 26 | Cost upper-bound premise and provider behavior | No provider/model/price has been selected, and no tokenizer or API response observed | Before any live activation verify from official tokenizer/provider documentation that full serialized HTTP JSON request UTF8 bytes bound billed input tokens, including any provider-added token overhead; if that premise cannot be established, live must stay disabled until a conservative accounting implementation or accounted token-count endpoint replaces it. Validate the selected model supports the adapter request fields, `max_tokens = 4096`, known usage names and no prompt caching/tool overhead; use one explicitly authorized bounded call only after prices+allowance are configured. Check transport timeout, 1 MiB response cap, http/network/malformed outcomes and known/unknown usage settlement. Reconcile actual billed cost against the recorded reservation; any breach blocks further activation |
-| 27 | Live auth/recovery/reload and no demo side effects | No browser, auth session or redirect has run | Configure Auth Site URL and allowed redirects to the exact app origin/path plus `?demo=0`; allow that origin in server `ALLOWED_ORIGINS`. In an authorized browser verify sign up/confirmation, sign in, refresh session, sign out, recovery email link and new password. Verify auth-owner changes clear review. Create/generate an owned run, refresh saved runs, select it and re-upload identical original input; verify initial review, request drops/violations, complete successive/category edits, stored approval metadata, ledger and export behavior. Different upload/config refuses restore. Ensure `?demo=1` imports no Supabase runtime module, touches no auth storage/client and makes no Supabase/provider request, even with both public values configured |
-| 28 | Server setting names and empty-price fail-closed activation | Names only; no secrets or credentials were read or configured during construction | Inventory server settings: `ANTHROPIC_API_KEY`, `GENERATOR_MODEL_ID`, `ALLOWED_ORIGINS`, `MODEL_PRICES_JSON`; optional adapter settings `OPENAI_COMPATIBLE_API_KEY`, `OPENAI_COMPATIBLE_BASE_URL`, `OPENAI_COMPATIBLE_MODEL_ID`; unused optional `TYPESAFE_API_KEY`. Verify platform-injected `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`. No server setting uses VITE_. Public `.env.example` remains exactly `VITE_SUPABASE_URL`/`VITE_SUPABASE_ANON_KEY`; `GITHUB_TOKEN` is builder-only. Missing key/model/prices must return 503; missing allowance must return 403; neither can call the model |
-| 29 | In-flight crash and settlement outage reconciliation | An edge process can stop after reservation or provider I/O; source conservatively leaves the request in flight when settlement fails | Simulate process loss after reservation and after provider completion in disposable infrastructure. Confirm retry yields 409 pending and cannot spend again. Operator must reconcile the provider outcome and reserved ledger using service-role settlement (unknown outcome charged at full bound), then verify both run/allowance accounting. Do not auto-expire a reservation or auto-reissue an unknown paid request |
+## Live enablement and accounting (requires explicit bounded authorization)
 
-M5 adds evaluation, mutation, builder and recording source plus assertions. None of those scripts or assertions
-has been executed. `docs/results.md` remains an all-unmeasured template; zero qualified ranges is a collection
-status, not an evaluation result. No GitHub repository has been screened or collected. Existing recordings
-remain synthetic-authored. The new fixed, authored synthetic entry subset is a proxy, independent of the
-rule-based comparator and not selected by running the validator.
+17. **Establish the token/price/model premise before a call.** Consult official provider/model/tokenizer
+    documentation for the exact immutable model, request fields, usage fields and billed overhead. Verify that
+    full serialized HTTP request UTF-8 bytes bound all billed input tokens, including provider-added overhead.
+    If this cannot be established, keep live disabled until conservative accounting or an accounted token-count
+    endpoint replaces the premise. Check adapter `max_tokens = 4096`, output limit, absence/accounting of caching
+    and tool overhead. Select official dated prices, update `config/prices.json`, then prepare the exact JSON as
+    server `MODEL_PRICES_JSON` with no duplicate price table. Compare deployed model/rates/date/file parity.
+    Missing/unknown/undated/mismatched prices or missing key/model must return 503 with no reservation/call.
+    Use only the handoff's names and settings surfaces; never log values or put secrets in VITE configuration.
+18. **Exercise atomic caps and exactly-once settlement.** First use fake provider dependencies/disposable SQL
+    and then only specifically authorized bounded live calls. Create an operator-approved tiny aggregate owner
+    allowance through the server path. Missing allowance is 403; run and owner `spent + reserved + bound` each
+    refuse 402 before provider I/O. Reserve concurrently on one run and across two runs of the same owner;
+    settle the same attempt concurrently twice. Inspect runs, allowance, calls and requests: one charge and
+    reservation release only, repeated settle returns first stored result, at most two attempts/request and
+    twice chunk count/run. Completed requests return stored output without another call. Test timeout,
+    HTTP/network/malformed output, 1 MiB response limit and known/unknown usage; 502/503/504 must not be mock
+    success. Reconcile billed cost against reservation; any breach blocks further activation.
+19. **Reconcile interrupted paid requests without replay.** Simulate process loss after reservation and after
+    provider completion plus settlement outage. Retry must be 409 pending or failed_unknown, never automatic
+    spend. An operator checks provider outcome/billing and uses the authorized service settlement path; unknown
+    usage/outcome charges the bound. Verify both run and allowance accounting. Do not auto-expire a reservation
+    or auto-reissue an unknown outcome. No worker/job is supplied to repair these cases.
+20. **Record only an explicitly authorized live chunk.** After step 17, supply the builder-only opt-in and
+    provider/model names from the handoff through an authorized shell without persisting secret values. Run:
+    `node scripts/record-mock.ts --input fixtures/gitlog/synthetic-traps.gitlog.v1.json --fixture synthetic-traps --chunk 0 --max-usd 0.50 --i-am-authorized`.
+    BOTH `S29_RECORD_LIVE=1` and the authorization flag are required before live import/I/O; key, model, dated
+    local price and explicit cap also gate the call. Inspect model/prompt/config/price/usage/cost/latency
+    provenance and the exclusive `fixtures/recorded/live-attempt-<hash>.json` journal. An interrupted/unknown
+    outcome must be reconciled with billing before any further action. The local journal is distinct from
+    SQL ledger/allowance accounting. Complete each needed chunk only under bounded authorization; replay makes
+    no paid call. Exercise the injection range live and record its actual supported-or-dropped outcome in
+    LIMITATIONS; it remains **not yet measured** until then.
 
-| # | What | Why deferred | Exact command / steps |
-|---|---|---|---|
-| 30 | M5 metric denominators, mutations, repository isolation, one-time reservation, audit snapshots/import and keyless dependency assertions | Tests written only; no assertion has executed | After rows 1–4: `npm test -- tests/unit/eval.metrics.test.ts tests/unit/eval.mutations.test.ts tests/unit/eval.split.test.ts tests/unit/eval.audit.test.ts tests/unit/eval.builder-recorder.test.ts tests/static/eval-keyless-boundary.test.ts`; then `npm run typecheck` and `npm run lint`. Check the tiny-denominator micro-average, zero denominators, prefix/OR recall, separate partial audit labels, seeded mutations and explicit precondition skips. The marker test uses an isolated temporary marker; audit CLI tests use in-memory artifact I/O. Confirm valid dev labels remain untouched while heldout writes a completed receipt/report; explicit imports still reject wrong dataset/config/IDs; exact labels import without reopening ranges; frozen cases retain bullet/citation/commit context. These tests never consume the product heldout set |
-| 31 | Keyless synthetic evaluation and exact mock replay parity | Evaluator source never imported/executed; actual prompt/facts pipeline parity remains row15 | With no API keys or network: `node scripts/eval.ts --split synthetic --seed 2901`. It writes `docs/results.md` and `docs/results-synthetic.md`; inspect all mutation skips/misses, every named false drop, real rule-based/section-gate rows and typed/untyped denominators. Missing exact chunk recordings leave model rows `not yet measured`, never count a partial release. Confirm no builder/recorder/live adapter is imported. No synthetic/mock zero-cost row estimates live cost |
-| 32 | Gold screening, attribution, PR mapping, repository split and fixed collection target | Zero qualified ranges/zero repos; builder never run; no network/credentials permitted in construction | Prepare an operator-reviewed local `gold-candidates.v1` packet under `gold/` matching exported `Candidate` in `scripts/build-gold.ts`, with trusted local exported gitlogs, public status, license/evidence URLs, retrieval dates, handwritten/human-changeset provenance and reviewed PR entries. Run `node scripts/build-gold.ts --candidates gold/candidates.json --freeze YYYY-MM-DD --seed 2901` after replacing the date. Optional `--verify-github` uses public GitHub metadata and optional builder-only `GITHUB_TOKEN`; it never substitutes for handwritten-note review. Inspect every inclusion/exclusion reason and attribution. Require20 ranges/at least8 repos for complete gold evidence; a short collection remains explicitly `gold target unmet: N ranges / M repos` and can be evaluated as partial evidence. Never silently reduce target or overwrite a frozen manifest |
-| 33 | Dev tuning/freeze and once-only heldout | No thresholds have been tuned and no gold split is frozen; current `untuned` metadata remains true | After row32: `node scripts/eval.ts --split dev --seed 2901`; inspect false drops/misses and tune only on dev by editing `config/thresholds.json`, recording its truthful `untuned`/`tuned_on` metadata. Repeat dev until configuration is chosen. `node scripts/eval.ts --split dev --seed 2901 --freeze-dev` exclusively writes `gold/dev-freeze.json` binding the exact config, manifest, seed and dev dataset. Then run exactly once: `node scripts/eval.ts --split heldout --seed 2901 --heldout-once`. It reserves `gold/heldout-once.json` before opening heldout artifacts; any failure still consumes the marker. Heldout evaluation never reads `gold/audit.json`, so dev labels may remain there; its human-audit result stays `not yet measured` until the separate row35 import. Never delete a failed marker to rerun/tune. Inspect `docs/results-heldout.md`; retain split reports. A changed config/manifest/seed refuses heldout; a consumed marker closes dev tuning. Static checks do not prove these effects |
-| 34 | Future authorized live recording, usage/cost provenance and local once-only journal | No paid calls authorized or performed in construction; model/dated prices unset | First complete row26's official model/token-bound verification and choose dated prices in `config/prices.json`. In a future explicitly authorized shell provide `ANTHROPIC_API_KEY`, `GENERATOR_MODEL_ID`, and builder-only opt-in `S29_RECORD_LIVE=1` without storing secret values in files. Run one bounded call: `node scripts/record-mock.ts --input fixtures/gitlog/synthetic-traps.gitlog.v1.json --fixture synthetic-traps --chunk 0 --max-usd 0.50 --i-am-authorized`. Without BOTH the flag and opt-in env the helper refuses before live import/I/O. It checks the byte/token reservation against the explicit cap before calling, uses the existing Anthropic adapter once, and records model/prompt/config/dated-price/usage/cost/latency provenance. An exclusive `live-attempt-<hash>.json` journal prevents automatic repeat after unknown outcomes; reconcile provider billing manually before any further action. This helper's local journal is not the deployed SQL ledger. Complete every required chunk under separately bounded authorization before interpreting release metrics; replay itself makes no paid call |
-| 35 | Parts B/C live recall, costs and human labels | No authorized live recordings, qualified gold or60 labels exist; no superiority/cost/precision claim | For reviewed gold recordings use row34 with each range's hash-pinned gitlog and its manifest range id as `--fixture`; record all chunks before the once-only heldout evaluation. Eval reports raw/gated/section comparator on the same recording; cost is charged once per source release, not per comparator. Inspect paired micro recall and per-release ledger costs; under-$5 is not a full-gold claim from a single split. The report and `gold/audit-sample-<split>.json` freeze each seeded case's ID/disposition, exact bullet/category/cites, source range/repository/fingerprint/index, citation resolutions and sanitized cited commit subjects/bodies/paths with active/revert context. Roy labels support against that frozen evidence, without reconstructing replay ordering or claiming truth. Dev evaluation may read matching dev labels from `gold/audit.json`. After heldout has completed, replace that file with `{schema:"audit.v1",dataset,config,labels:[{id,label}]}` using the heldout sample's exact dataset/config and60 IDs with labels (`supported`, `partial`, `unsupported`), then run `node scripts/eval.ts --split heldout --audit-only`. This explicit import rejects mismatched lineage/IDs and verifies the completed report/sample hashes without reopening heldout data or rerunning metrics. Partial labels remain separate. Fewer than60 live bullets/labels remain `not yet measured`; Jev and paid self-review remain unmeasured |
+## Gold, heldout, audit and final receipts
+
+21. **Collect and screen gold without reducing the target.** Prepare an operator-reviewed local
+    `gold-candidates.v1` packet under `gold/`, matching exported `Candidate` in `scripts/build-gold.ts`: trusted
+    local gitlogs, public status, permissive license/evidence URLs, retrieval dates, handwritten/human-changeset
+    provenance and reviewed PR entry maps. Run
+    `node scripts/build-gold.ts --candidates gold/candidates.json --freeze YYYY-MM-DD --seed 2901` with the actual
+    freeze date. Optional `--verify-github` uses public metadata and the handoff's optional builder-only token;
+    it cannot establish handwritten authorship. Inspect every inclusion/exclusion reason and attribution.
+    Require 20 ranges across at least 8 repos; a short collection is visibly partial evidence (`gold target
+    unmet: N ranges / M repos`), never a silently lowered target. Do not overwrite an already frozen manifest.
+22. **Tune dev, freeze, then consume heldout once.** After qualified artifacts/needed recordings exist, run
+    `node scripts/eval.ts --split dev --seed 2901`; inspect named false drops/misses and tune only on dev via
+    `config/thresholds.json`, recording honest `untuned`/`tuned_on` metadata. Repeat dev only before freeze.
+    Run `node scripts/eval.ts --split dev --seed 2901 --freeze-dev` to exclusively write `gold/dev-freeze.json`
+    binding exact config/manifest/seed/dev dataset. Then exactly once run
+    `node scripts/eval.ts --split heldout --seed 2901 --heldout-once`. The exclusive `gold/heldout-once.json`
+    marker is reserved before opening heldout artifacts; a failure still consumes it. Never delete/reset it
+    to rerun or tune. Changed config/manifest/seed refuses, and a consumed marker closes dev tuning. Retain
+    `docs/results-dev.md` and `docs/results-heldout.md`. Valid dev labels may remain in `gold/audit.json`:
+    heldout evaluation does not read that file; heldout audit stays unmeasured until explicit import.
+23. **Compare live evidence and import the frozen human audit.** For gold recording use step 20 with each
+    range's hash-pinned gitlog, manifest range id as `--fixture` and every required chunk recorded before
+    heldout. Raw/gated/section rows use identical recording evidence; charge source-release cost once, not per
+    comparator. Inspect paired micro recall, typed/untyped denominators and per-release costs; one split is
+    not full-gold cost evidence. Inspect `gold/audit-sample-<split>.json`: each seeded case freezes exact ID,
+    bullet/category/cites/disposition, source repository/range/fingerprint/index, citation resolutions and
+    sanitized cited subject/body/paths plus active/revert context. Roy labels support against that evidence,
+    not truth. Dev may use matching dev labels. After heldout completes, put the heldout sample's exact
+    dataset/config and 60 IDs in `gold/audit.json` as
+    `{schema:"audit.v1",dataset,config,labels:[{id,label}]}` with `supported`, `partial` or `unsupported`, then run
+    `node scripts/eval.ts --split heldout --audit-only`. It must reject wrong lineage/IDs and verify completed
+    report/sample hashes without reopening heldout or rerunning metrics; preserve valid dev labels until this
+    explicit replacement. Partial labels stay separate. Fewer than 60 live bullets/labels stays `not yet
+    measured`. Jev and paid self-review stay **not built, unmeasured** and unmeasured respectively.
+24. **Close with real receipts, not inferred readiness.** Reconcile BOLT-HANDOFF's spec acceptance rows against
+    actual commands, target, revision, deployed resources, auth/isolation/round-trip/missing-setting observations
+    and remaining blockers. Inspect final chosen origin/auth redirects if hosting is later prepared. Publishing
+    requires its own authorization; it is not part of the initial inspection-only prompt. Copy README result
+    claims only from evaluator-written `docs/results.md`, name measured failures in LIMITATIONS and retain the
+    source-only status for anything not executed. No row above is closed by current static construction.
