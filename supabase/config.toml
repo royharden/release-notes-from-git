@@ -1,0 +1,5 @@
+project_id = "release-notes-from-git"
+
+[functions.generate-notes]
+verify_jwt = true
+

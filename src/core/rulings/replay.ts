@@ -89,6 +89,8 @@ export async function applyRulings(state: ReviewState, rulings: readonly Ruling[
       if (ruling.approval_hash !== null) latestApproval = { ruling_id: ruling.id, approval_hash: ruling.approval_hash };
       continue;
     }
+    // Persist invalidation in replay too: a no-op edit must not revive an older approval on reload.
+    latestApproval = null;
     if (ruling.config_version !== ctx.configVersion) {
       notReplayed.push(ruling);
       continue;

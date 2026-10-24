@@ -1,7 +1,7 @@
 import { createMockProvider } from '@shared/providers/mock.ts';
 import { buildPrompt, allowedShasForPrompt, promptHash } from '@shared/prompt.ts';
 import { parseModelOutput } from '@shared/output-schema.ts';
-import type { BulletViolation } from '@shared/output-schema.ts';
+import type { BulletViolation, OutsideRequestDrop } from '@shared/output-schema.ts';
 import type { WireUnit } from '@shared/units-wire.ts';
 import type { BulletInput, ValidateFn } from '../core/validate/reasons.ts';
 import { REASON_CODES } from '../core/validate/reasons.ts';
@@ -12,6 +12,7 @@ import { contentKey } from '../core/rulings/replay.ts';
 import type { ReviewState, Ruling } from '../core/rulings/types.ts';
 import type { LedgerRow, RequestDrop } from '../data/repo.ts';
 import { recordingFiles, recordingIndex } from './demo-assets.ts';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 export type { RequestDrop } from '../data/repo.ts';
 export interface DemoGeneration {
@@ -19,6 +20,27 @@ export interface DemoGeneration {
   requestDrops: RequestDrop[];
   violations: BulletViolation[];
   ledger: LedgerRow[];
+}
+
+/** Edge failures propagate; this path cannot invoke a mock provider or invent success. */
+export async function generateLive(client: SupabaseClient,runId: string,units: readonly WireUnit[],provider: 'anthropic'|'openai_compatible' = 'anthropic'): Promise<DemoGeneration> {
+  const out: DemoGeneration = { bullets: [],requestDrops: [],violations: [],ledger: [] };
+  for (const chunk of [...new Set(units.map((u) => u.chunk_index))].sort((a,b) => a-b)) {
+    const { data,error } = await client.functions.invoke('generate-notes',{ body: { run_id: runId,chunk_index: chunk,provider } });
+    if (error) throw new Error(`Live generation failed: ${error.message}. Inspect the ledger before retrying; unknown paid outcomes are not automatically reissued.`);
+    if (!data || data.status !== 'completed' || !Array.isArray(data.bullets) || !Array.isArray(data.outsideRequest) || !Array.isArray(data.violations)) throw new Error('Live generation returned an incomplete response.');
+    const allowed = allowedShasForPrompt(unitsOfChunk(units,chunk));
+    // Reparse all model proposals locally, including request drops, rather than trusting server caches.
+    const parsed = parseModelOutput({ bullets: [...data.bullets,...data.outsideRequest.map((drop: { bullet: unknown }) => drop.bullet)] },allowed);
+    if (!parsed.ok) throw new Error(`Live output refused: ${parsed.detail}`);
+    out.bullets.push(...parsed.bullets,...parsed.outsideRequest.map((drop) => drop.bullet));
+    out.requestDrops.push(...parsed.outsideRequest.map((drop) => {
+      const source = (data.outsideRequest as OutsideRequestDrop[]).find((candidate) => requestIdentity(candidate.bullet) === requestIdentity(drop.bullet));
+      return { ...drop,index: source?.index ?? drop.index,chunk_index: chunk,requestShas: [...allowed.keys()] };
+    }));
+    out.violations.push(...data.violations as BulletViolation[],...parsed.violations);
+  }
+  return out;
 }
 
 /** Exact prompt-hash replay only. An upload without a matching recording gets an explicit error. */

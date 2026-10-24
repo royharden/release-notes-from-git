@@ -28,4 +28,14 @@ describe('model and retained-data field contracts', () => {
     }
     expect([...WIRE_UNIT_FIELDS, ...SANITIZED_COMMIT_FIELDS].some((field) => /author|email|committer|^name$/i.test(field))).toBe(false);
   });
+  it('no migration declares a forbidden retained-data column', () => {
+    for (const file of ['20261101000100_core_tables.sql','20261101000200_rls_and_grants.sql','20261101000300_seal_and_rulings.sql','20261101000400_budget_and_ledger.sql']) {
+      const source = readText(`supabase/migrations/${file}`);
+      const tables = [...source.matchAll(/create table public\.\w+\s*\(([\s\S]*?)\n\);/gi)];
+      for (const table of tables) {
+        const columns = [...table[1]!.matchAll(/(?:^|,)\s*(\w+)\s+(?:uuid|text|jsonb|integer|numeric|boolean|timestamptz|bigint|date)\b/gim)].map((m) => m[1]!);
+        expect(columns.filter((field) => /author|committer|(?:^|_)e?mail(?:$|_)|^name$/i.test(field)),file).toEqual([]);
+      }
+    }
+  });
 });

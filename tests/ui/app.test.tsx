@@ -6,12 +6,32 @@ import { App } from '../../src/ui/App.tsx';
 import { ReviewDialog } from '../../src/ui/ReviewDialog.tsx';
 import { reviewBullet } from './helpers.ts';
 
+const { createBrowserClient } = vi.hoisted(() => ({ createBrowserClient: vi.fn() }));
+vi.mock('../../src/lib/supabase.ts', () => ({ createBrowserClient }));
+vi.mock('../../src/data/supabase-repo.ts', () => {
+  throw new Error('Synthetic repository import failure.');
+});
+
+function liveAuthClient(owner: string | null = null) {
+  const runs = {
+    select: vi.fn().mockReturnThis(), eq: vi.fn().mockReturnThis(), order: vi.fn().mockReturnThis(),
+    limit: vi.fn().mockResolvedValue({ data: [], error: null }),
+  };
+  return {
+    auth: {
+      getSession: vi.fn().mockResolvedValue({ data: { session: owner ? { user: { id: owner } } : null }, error: null }),
+      onAuthStateChange: vi.fn().mockReturnValue({ data: { subscription: { unsubscribe: vi.fn() } } }),
+    },
+    from: vi.fn().mockReturnValue(runs),
+  };
+}
+
 beforeAll(() => {
   // jsdom does not implement native modal focus/inert behaviour; real-browser coverage is deferred.
   HTMLDialogElement.prototype.showModal = function () { this.setAttribute('open', ''); };
   HTMLDialogElement.prototype.close = function () { this.removeAttribute('open'); };
 });
-afterEach(() => { cleanup(); vi.restoreAllMocks(); });
+afterEach(() => { cleanup(); vi.restoreAllMocks(); vi.clearAllMocks(); });
 
 describe('keyless review journey', () => {
   it('requires acknowledgement, populates all four tabs, restores a soft drop and exports only after approval', async () => {
@@ -54,13 +74,24 @@ describe('keyless review journey', () => {
     fireEvent.change(screen.getByLabelText('Version'), { target: { value: 'v1.0.1' } });
     expect(screen.getByRole('button', { name: 'Download Markdown' })).toBeDisabled();
   });
-  it('renders setup and live-unavailable states without presenting mock generation as live', () => {
+  it('renders setup and signed-out live states without making upload available', async () => {
+    createBrowserClient.mockReturnValue(liveAuthClient());
     const { rerender } = render(<App mode={{ kind: 'setup', detail: 'Both public values are required.' }} />);
     expect(screen.getByText(/Both public values are required/)).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Load example' })).not.toBeInTheDocument();
     // App mode is stable for a mounted session; a new mount represents a navigation/configuration change.
     rerender(<App key="live" mode={{ kind: 'live' }} />);
-    expect(screen.getByText(/No live request has been made/)).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Sign in for live generation' })).toBeInTheDocument();
+    expect(createBrowserClient).toHaveBeenCalledTimes(1);
+    expect(screen.queryByRole('button', { name: 'Upload JSON' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Load example' })).not.toBeInTheDocument();
+  });
+  it('shows repository initialization errors while the live upload is unavailable', async () => {
+    createBrowserClient.mockReturnValue(liveAuthClient('synthetic-owner'));
+    render(<App mode={{ kind: 'live' }} />);
+    expect(await screen.findByRole('heading', { name: 'Your live account' })).toBeInTheDocument();
+    expect(await screen.findByRole('alert')).toHaveTextContent('The live repository could not load. Reload the page to retry.');
+    expect(screen.queryByRole('button', { name: 'Upload JSON' })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Load example' })).not.toBeInTheDocument();
   });
   it('requires a nonblank reason before the restore form can submit', () => {
