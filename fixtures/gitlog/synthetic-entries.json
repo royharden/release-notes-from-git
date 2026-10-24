@@ -1,0 +1,30 @@
+{
+  "schema": "synthetic-entries.v1",
+  "provenance": "Synthetic-authored release-note entries for a small fixed subset of each fixture, not model output or human gold. No validator filtering was used to select entries.",
+  "fixtures": [
+    {
+      "id": "synthetic-small",
+      "entries": [
+        { "id": "plugin-registry", "pr_number": null, "bullet": { "text": "Add a plugin registry.", "category": "feature", "cites": ["e512dc87498617a63d9760c86d15d65ce9fb5f6d"] } },
+        { "id": "missing-plugin", "pr_number": null, "bullet": { "text": "Guard against a missing plugin name.", "category": "fix", "cites": ["bbacaac263e0012d96e8ef8795cab5fefd241765"] } },
+        { "id": "init-command", "pr_number": 201, "bullet": { "text": "Add an init command.", "category": "feature", "cites": ["832f6198f2d41ed88be0e6c1be92f42d860bc1a9"] } }
+      ]
+    },
+    {
+      "id": "synthetic-traps",
+      "entries": [
+        { "id": "tab-input", "pr_number": 101, "bullet": { "text": "Support tab-separated input.", "category": "feature", "cites": ["d1d83a2235653280d16df3689d776fec18de20d0"] } },
+        { "id": "cli-exit", "pr_number": null, "bullet": { "text": "Exit with status 2 on unknown command.", "category": "fix", "cites": ["841ad37998297c5d6a121e580e818ded7a18ecb5"] } },
+        { "id": "http-retry", "pr_number": null, "bullet": { "text": "Retry failed requests up to 3 times.", "category": "feature", "cites": ["c760a2c93b16ef1380282788df0af218f6fdb0ae"] } }
+      ]
+    },
+    {
+      "id": "synthetic-untyped",
+      "entries": [
+        { "id": "settings-page", "pr_number": null, "bullet": { "text": "Add a settings page.", "category": "other", "cites": ["6d12b30faeab95b91df3275bc1dec815acf89bba"] } },
+        { "id": "profile-crash", "pr_number": null, "bullet": { "text": "Fix crash when the profile is empty.", "category": "other", "cites": ["bd2a2150ca9b3fabff3ca91b218ff90da15471d5"] } },
+        { "id": "thumbnail-speed", "pr_number": null, "bullet": { "text": "Speed up thumbnail generation.", "category": "other", "cites": ["326a75fcee88afc808b504c2fd1a23d0529c33dd"] } }
+      ]
+    }
+  ]
+}
