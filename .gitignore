@@ -1,0 +1,12 @@
+node_modules/
+dist/
+coverage/
+*.log
+.DS_Store
+supabase/.temp/
+supabase/.branches/
+
+# Environment files: only the placeholder template is tracked.
+.env
+.env.*
+!.env.example

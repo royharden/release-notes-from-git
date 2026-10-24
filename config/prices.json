@@ -1,0 +1,11 @@
+{
+  "schema": "prices.v1",
+  "currency": "USD",
+  "entry_shape": {
+    "provider": "anthropic | openai_compatible",
+    "input_usd_per_mtok": "number, dated list price per million input tokens",
+    "output_usd_per_mtok": "number, dated list price per million output tokens",
+    "as_of": "YYYY-MM-DD, date the price was read from the provider's official pricing page"
+  },
+  "models": {}
+}

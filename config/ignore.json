@@ -1,0 +1,22 @@
+{
+  "ignoredTypes": ["chore", "ci", "test", "build", "docs", "style"],
+  "nonProductPaths": {
+    "prefixes": ["docs/", "doc/", "test/", "tests/", "__tests__/", ".github/", ".circleci/", ".gitlab/"],
+    "segments": ["__tests__", "__mocks__", "test", "tests", "docs"],
+    "suffixes": [
+      ".md",
+      ".gitlab-ci.yml",
+      "package-lock.json",
+      "npm-shrinkwrap.json",
+      "yarn.lock",
+      "pnpm-lock.yaml",
+      "bun.lockb",
+      "Cargo.lock",
+      "go.sum",
+      "poetry.lock",
+      "Pipfile.lock",
+      "Gemfile.lock",
+      "composer.lock"
+    ]
+  }
+}

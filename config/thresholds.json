@@ -1,0 +1,7 @@
+{
+  "minSupport": 0.5,
+  "duplicateJaccard": 0.8,
+  "borderlineBand": 0.1,
+  "untuned": true,
+  "tuned_on": null
+}
