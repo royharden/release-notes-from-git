@@ -10,3 +10,16 @@ supabase/.branches/
 .env
 .env.*
 !.env.example
+
+# Keep credentials and local/generated artifacts out of source control.
+.creds/
+ArchiveManager-creds.txt
+*.pem
+*.key
+*.p12
+*.pfx
+*.zip
+*.tar.gz
+.cache/
+.pytest_cache/
+.ruff_cache/
