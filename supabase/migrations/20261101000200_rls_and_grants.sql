@@ -1,0 +1,22 @@
+alter table public.runs enable row level security;
+alter table public.run_units enable row level security;
+alter table public.bullets enable row level security;
+alter table public.rulings enable row level security;
+revoke all on public.runs,public.run_units,public.bullets,public.rulings from public,anon,authenticated;
+grant select on public.runs,public.run_units,public.bullets,public.rulings to authenticated;
+grant insert (repo_label,from_ref,to_ref,input_sha256,parse_report,has_unit_omissions,config_version,budget_usd) on public.runs to authenticated;
+grant update (omissions_ack_at) on public.runs to authenticated;
+grant insert (run_id,ordinal,chunk_index,unit_key,shas,pr_number,type,scope,breaking,subjects,body,paths,noise_reason,revert_state) on public.run_units to authenticated;
+grant insert (run_id,initial_review,request_drops,violations) on public.bullets to authenticated;
+grant insert (client_event_id,run_id,action,target_key,payload,fingerprint,config_version,approval_hash,reason,created_at) on public.rulings to authenticated;
+grant all on public.runs,public.run_units,public.bullets,public.rulings to service_role;
+create policy runs_read on public.runs for select to authenticated using (owner = auth.uid());
+create policy runs_insert on public.runs for insert to authenticated with check (owner = auth.uid() and status = 'draft');
+create policy runs_ack on public.runs for update to authenticated using (owner = auth.uid() and status = 'draft') with check (owner = auth.uid() and status = 'draft');
+create policy units_read on public.run_units for select to authenticated using (owner = auth.uid());
+create policy units_insert on public.run_units for insert to authenticated with check (owner = auth.uid() and exists (select 1 from public.runs r where r.id = run_id and r.owner = auth.uid() and r.status = 'draft'));
+create policy bullets_read on public.bullets for select to authenticated using (owner = auth.uid());
+create policy bullets_insert on public.bullets for insert to authenticated with check (owner = auth.uid() and exists (select 1 from public.runs r where r.id = run_id and r.owner = auth.uid() and r.status = 'sealed'));
+create policy rulings_read on public.rulings for select to authenticated using (owner = auth.uid());
+create policy rulings_insert on public.rulings for insert to authenticated with check (owner = auth.uid() and actor = auth.uid() and exists (select 1 from public.runs r where r.id = run_id and r.owner = auth.uid() and r.status = 'sealed'));
+

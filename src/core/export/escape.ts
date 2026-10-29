@@ -17,7 +17,7 @@ const AUTOLINKABLE = /(?:\b[A-Za-z][A-Za-z0-9+.-]*:\/\/|\bwww\.)\S+|[^\s@]+@[^\s
 // eslint-disable-next-line no-control-regex
 const CONTROL_CHARS = /[\u0000-\u001f\u007f-\u009f]/g;
 /** Bidirectional and invisible formatting controls that can make rendered text differ from its source. */
-const FORMAT_CHARS = /[​-‏‪-‮⁠-⁤⁦-⁩﻿]/g;
+const FORMAT_CHARS = /[\u{200b}-\u{200f}\u{202a}-\u{202e}\u{2060}-\u{2064}\u{2066}-\u{2069}\u{feff}]/gu;
 
 /** One line of plain text: control characters become spaces, format controls are removed, whitespace collapsed. */
 export function toSingleLine(text: string): string {

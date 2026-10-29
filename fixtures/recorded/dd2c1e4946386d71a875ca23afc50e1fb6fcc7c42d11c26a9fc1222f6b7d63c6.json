@@ -1,0 +1,232 @@
+{
+  "schema": "recording.v1",
+  "output": {
+    "bullets": [
+      {
+        "text": "Tab-separated input is accepted by the import command via the `--tsv` flag.",
+        "category": "feature",
+        "cites": [
+          "d1d83a2235653280d16df3689d776fec18de20d0"
+        ]
+      },
+      {
+        "text": "The CLI exits with status 2 on an unknown command.",
+        "category": "fix",
+        "cites": [
+          "841ad37998297c5d6a121e580e818ded7a18ecb5"
+        ]
+      },
+      {
+        "text": "Mistyped subcommands now abort early.",
+        "category": "fix",
+        "cites": [
+          "841ad37998297c5d6a121e580e818ded7a18ecb5"
+        ]
+      },
+      {
+        "text": "Failed requests are retried up to 3 times with exponential backoff.",
+        "category": "feature",
+        "cites": [
+          "c760a2c93b16ef1380282788df0af218f6fdb0ae"
+        ]
+      },
+      {
+        "text": "Failed requests are retried up to 5 times.",
+        "category": "feature",
+        "cites": [
+          "c760a2c93b16ef1380282788df0af218f6fdb0ae"
+        ]
+      },
+      {
+        "text": "Each HTTP client has a retry budget that caps retries across its requests.",
+        "category": "feature",
+        "cites": [
+          "70e125c992f1d2dc5bce651c122e61932bd73ea2"
+        ]
+      },
+      {
+        "text": "Settings are read from config.toml; settings.json is no longer read.",
+        "category": "breaking",
+        "cites": [
+          "a29bba3d31b89246b8df4c8764699a550a0702c7"
+        ]
+      },
+      {
+        "text": "A dark theme is available, with a theme toggle in settings.",
+        "category": "feature",
+        "cites": [
+          "446a276f92c0ac6cce0df3f3d38336c4265bbddb",
+          "daf08d3050a176ca4162abfc5a6f6c9cecd4a1a5"
+        ]
+      },
+      {
+        "text": "Layout is skipped for hidden panels.",
+        "category": "performance",
+        "cites": [
+          "7fa3bfc3ef6e854984954881f91b6352a7357bff"
+        ]
+      },
+      {
+        "text": "Layout is skipped for hidden panels.",
+        "category": "performance",
+        "cites": [
+          "7fa3bfc3ef6e854984954881f91b6352a7357bff"
+        ]
+      },
+      {
+        "text": "Search matches terms with up to one typo.",
+        "category": "feature",
+        "cites": [
+          "43a66549a5006b14ec35b0bb82f8106ea7b302ee"
+        ]
+      },
+      {
+        "text": "Expired session tokens are rejected.",
+        "category": "fix",
+        "cites": [
+          "380f6afddbf348204b7c8d46329accb9f27c68e4"
+        ]
+      },
+      {
+        "text": "Parsed manifests are cached in memory.",
+        "category": "performance",
+        "cites": [
+          "8669c7217d05d2dc491f4d20aa80875c2484af21"
+        ]
+      }
+    ]
+  },
+  "usage": null,
+  "annotations": [
+    {
+      "index": 0,
+      "trap": null,
+      "expect": {
+        "stage": "validator",
+        "kept": true,
+        "reason": null,
+        "warnings": []
+      }
+    },
+    {
+      "index": 1,
+      "trap": null,
+      "expect": {
+        "stage": "validator",
+        "kept": true,
+        "reason": null,
+        "warnings": []
+      }
+    },
+    {
+      "index": 2,
+      "trap": "planted_low_support",
+      "expect": {
+        "stage": "validator",
+        "kept": false,
+        "reason": "low_support",
+        "warnings": []
+      }
+    },
+    {
+      "index": 3,
+      "trap": null,
+      "expect": {
+        "stage": "validator",
+        "kept": true,
+        "reason": null,
+        "warnings": []
+      }
+    },
+    {
+      "index": 4,
+      "trap": "t_single_digit_literal",
+      "expect": {
+        "stage": "validator",
+        "kept": false,
+        "reason": "literal_not_in_evidence",
+        "warnings": []
+      }
+    },
+    {
+      "index": 5,
+      "trap": null,
+      "expect": {
+        "stage": "validator",
+        "kept": true,
+        "reason": null,
+        "warnings": []
+      }
+    },
+    {
+      "index": 6,
+      "trap": "t_breaking_footer",
+      "expect": {
+        "stage": "validator",
+        "kept": true,
+        "reason": null,
+        "warnings": []
+      }
+    },
+    {
+      "index": 7,
+      "trap": "t_merge_commit_pr",
+      "expect": {
+        "stage": "validator",
+        "kept": true,
+        "reason": null,
+        "warnings": []
+      }
+    },
+    {
+      "index": 8,
+      "trap": null,
+      "expect": {
+        "stage": "validator",
+        "kept": true,
+        "reason": null,
+        "warnings": []
+      }
+    },
+    {
+      "index": 9,
+      "trap": "planted_duplicate",
+      "expect": {
+        "stage": "validator",
+        "kept": false,
+        "reason": "duplicate_of",
+        "warnings": []
+      }
+    },
+    {
+      "index": 10,
+      "trap": "t_revert_in_range",
+      "expect": {
+        "stage": "validator",
+        "kept": false,
+        "reason": "reverted_in_range",
+        "warnings": []
+      }
+    },
+    {
+      "index": 11,
+      "trap": "t_cherry_pick_dup",
+      "expect": {
+        "stage": "validator",
+        "kept": true,
+        "reason": null,
+        "warnings": []
+      }
+    },
+    {
+      "index": 12,
+      "trap": "t_revert_of_revert",
+      "expect": {
+        "stage": "validator",
+        "kept": true,
+        "reason": null,
+        "warnings": []
+      }
+    }
+  ]
+}

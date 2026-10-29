@@ -1,0 +1,959 @@
+{
+  "schema": "gitlog.v1",
+  "repo_label": "synthetic/untyped-demo",
+  "from_ref": "r2026.06",
+  "to_ref": "r2026.07",
+  "base_url": "https://github.com/synthetic/untyped-demo",
+  "commits": [
+    {
+      "sha": "6d12b30faeab95b91df3275bc1dec815acf89bba",
+      "parents": [
+        "576e313ce893fd9080601383794bf120a83bf554"
+      ],
+      "date": "2026-07-01T08:00:00Z",
+      "subject": "Add a settings page",
+      "body": "",
+      "files": [
+        {
+          "path": "src/settings/page.tsx",
+          "added": 29,
+          "deleted": 1
+        }
+      ]
+    },
+    {
+      "sha": "bd2a2150ca9b3fabff3ca91b218ff90da15471d5",
+      "parents": [
+        "6d12b30faeab95b91df3275bc1dec815acf89bba"
+      ],
+      "date": "2026-07-01T11:00:00Z",
+      "subject": "Fix crash when the profile is empty",
+      "body": "",
+      "files": [
+        {
+          "path": "src/profile/load.ts",
+          "added": 27,
+          "deleted": 4
+        }
+      ]
+    },
+    {
+      "sha": "ab668d5f51190badc9e741211de8669cdce83771",
+      "parents": [
+        "bd2a2150ca9b3fabff3ca91b218ff90da15471d5"
+      ],
+      "date": "2026-07-01T14:00:00Z",
+      "subject": "Update README",
+      "body": "",
+      "files": [
+        {
+          "path": "README.md",
+          "added": 17,
+          "deleted": 4
+        }
+      ]
+    },
+    {
+      "sha": "326a75fcee88afc808b504c2fd1a23d0529c33dd",
+      "parents": [
+        "ab668d5f51190badc9e741211de8669cdce83771"
+      ],
+      "date": "2026-07-01T17:00:00Z",
+      "subject": "Speed up thumbnail generation",
+      "body": "",
+      "files": [
+        {
+          "path": "src/media/thumbs.ts",
+          "added": 27,
+          "deleted": 4
+        }
+      ]
+    },
+    {
+      "sha": "f22d3c0551ac1f0ce49a4126c4c816e6e3979106",
+      "parents": [
+        "326a75fcee88afc808b504c2fd1a23d0529c33dd"
+      ],
+      "date": "2026-07-01T20:00:00Z",
+      "subject": "Add dark mode toggle (#310)",
+      "body": "",
+      "files": [
+        {
+          "path": "src/ui/theme.ts",
+          "added": 23,
+          "deleted": 0
+        }
+      ]
+    },
+    {
+      "sha": "04a14dd9c4f703629c3ac8dcfa8bfe8ce36b7263",
+      "parents": [
+        "f22d3c0551ac1f0ce49a4126c4c816e6e3979106"
+      ],
+      "date": "2026-07-01T23:00:00Z",
+      "subject": "Handle network timeouts in sync",
+      "body": "",
+      "files": [
+        {
+          "path": "src/sync/net.ts",
+          "added": 23,
+          "deleted": 0
+        }
+      ]
+    },
+    {
+      "sha": "4281ee40377ce4a01cdf64f12e440234d6ee13ba",
+      "parents": [
+        "04a14dd9c4f703629c3ac8dcfa8bfe8ce36b7263"
+      ],
+      "date": "2026-07-02T02:00:00Z",
+      "subject": "Bump lockfile",
+      "body": "",
+      "files": [
+        {
+          "path": "package-lock.json",
+          "added": 25,
+          "deleted": 2
+        }
+      ]
+    },
+    {
+      "sha": "2c44777fa56d028257c234a2e5ae03ecc47320f7",
+      "parents": [
+        "4281ee40377ce4a01cdf64f12e440234d6ee13ba"
+      ],
+      "date": "2026-07-02T05:00:00Z",
+      "subject": "Add tests for the importer",
+      "body": "",
+      "files": [
+        {
+          "path": "tests/importer.test.ts",
+          "added": 30,
+          "deleted": 2
+        }
+      ]
+    },
+    {
+      "sha": "c4d0d3db7d66f658df3f858a444d5cab6cc30f46",
+      "parents": [
+        "2c44777fa56d028257c234a2e5ae03ecc47320f7"
+      ],
+      "date": "2026-07-02T08:00:00Z",
+      "subject": "Support drag and drop uploads",
+      "body": "",
+      "files": [
+        {
+          "path": "src/upload/drop.ts",
+          "added": 26,
+          "deleted": 3
+        }
+      ]
+    },
+    {
+      "sha": "39f8f0813cb8dee0735de2a172e24f3f85c617f3",
+      "parents": [
+        "c4d0d3db7d66f658df3f858a444d5cab6cc30f46"
+      ],
+      "date": "2026-07-02T11:00:00Z",
+      "subject": "Fix typo in error message",
+      "body": "",
+      "files": [
+        {
+          "path": "src/errors.ts",
+          "added": 21,
+          "deleted": 3
+        }
+      ]
+    },
+    {
+      "sha": "0232712b9fb1c8909298acf7bd43cf35651067a5",
+      "parents": [
+        "39f8f0813cb8dee0735de2a172e24f3f85c617f3"
+      ],
+      "date": "2026-07-02T14:00:00Z",
+      "subject": "Refactor the sync queue",
+      "body": "",
+      "files": [
+        {
+          "path": "src/sync/queue.ts",
+          "added": 25,
+          "deleted": 2
+        }
+      ]
+    },
+    {
+      "sha": "257443bdd670306658700d056ea93cb3445c5181",
+      "parents": [
+        "0232712b9fb1c8909298acf7bd43cf35651067a5"
+      ],
+      "date": "2026-07-02T17:00:00Z",
+      "subject": "Add CSV import (#314)",
+      "body": "",
+      "files": [
+        {
+          "path": "src/importer/csv.ts",
+          "added": 27,
+          "deleted": 4
+        }
+      ]
+    },
+    {
+      "sha": "25e1d3895da2afa762314b609c49377d70e3900c",
+      "parents": [
+        "257443bdd670306658700d056ea93cb3445c5181"
+      ],
+      "date": "2026-07-02T20:00:00Z",
+      "subject": "Improve search ranking for exact matches",
+      "body": "",
+      "files": [
+        {
+          "path": "src/search/rank.ts",
+          "added": 26,
+          "deleted": 3
+        }
+      ]
+    },
+    {
+      "sha": "371197b0cde210cd46ae7bb8c0169b1e3bccbb0a",
+      "parents": [
+        "25e1d3895da2afa762314b609c49377d70e3900c"
+      ],
+      "date": "2026-07-02T23:00:00Z",
+      "subject": "Fix memory leak in the image cache",
+      "body": "",
+      "files": [
+        {
+          "path": "src/media/cache.ts",
+          "added": 26,
+          "deleted": 3
+        }
+      ]
+    },
+    {
+      "sha": "9ee9e4e0e8f4e870736173c9261b8396a26796f8",
+      "parents": [
+        "371197b0cde210cd46ae7bb8c0169b1e3bccbb0a"
+      ],
+      "date": "2026-07-03T02:00:00Z",
+      "subject": "Update CI matrix",
+      "body": "",
+      "files": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "added": 32,
+          "deleted": 4
+        }
+      ]
+    },
+    {
+      "sha": "b3820fa1cbcf3f2f1535304de6324728c804f983",
+      "parents": [
+        "9ee9e4e0e8f4e870736173c9261b8396a26796f8"
+      ],
+      "date": "2026-07-03T05:00:00Z",
+      "subject": "Show upload progress",
+      "body": "",
+      "files": [
+        {
+          "path": "src/upload/progress.ts",
+          "added": 30,
+          "deleted": 2
+        }
+      ]
+    },
+    {
+      "sha": "b26d3e1401eb2a1181b33b90749e123d656d3641",
+      "parents": [
+        "b3820fa1cbcf3f2f1535304de6324728c804f983"
+      ],
+      "date": "2026-07-03T08:00:00Z",
+      "subject": "Allow renaming albums",
+      "body": "",
+      "files": [
+        {
+          "path": "src/albums/rename.ts",
+          "added": 28,
+          "deleted": 0
+        }
+      ]
+    },
+    {
+      "sha": "224423a3a6fa3b732f3be55e8792d24d45f06bae",
+      "parents": [
+        "b26d3e1401eb2a1181b33b90749e123d656d3641"
+      ],
+      "date": "2026-07-03T11:00:00Z",
+      "subject": "Fix album cover not updating",
+      "body": "",
+      "files": [
+        {
+          "path": "src/albums/cover.ts",
+          "added": 27,
+          "deleted": 4
+        }
+      ]
+    },
+    {
+      "sha": "1a62b53bb7a7eee6cc0f382129d21b9ce9f2a4d9",
+      "parents": [
+        "224423a3a6fa3b732f3be55e8792d24d45f06bae"
+      ],
+      "date": "2026-07-03T14:00:00Z",
+      "subject": "Add keyboard navigation to the gallery",
+      "body": "",
+      "files": [
+        {
+          "path": "src/gallery/keys.ts",
+          "added": 27,
+          "deleted": 4
+        }
+      ]
+    },
+    {
+      "sha": "910c8397323cdb124ea0cbbdcb109716ebba1ed1",
+      "parents": [
+        "1a62b53bb7a7eee6cc0f382129d21b9ce9f2a4d9"
+      ],
+      "date": "2026-07-03T17:00:00Z",
+      "subject": "Document the sync protocol",
+      "body": "",
+      "files": [
+        {
+          "path": "docs/sync.md",
+          "added": 20,
+          "deleted": 2
+        }
+      ]
+    },
+    {
+      "sha": "196beccf6094200386e77a80a50ac1147ccaa7bc",
+      "parents": [
+        "910c8397323cdb124ea0cbbdcb109716ebba1ed1"
+      ],
+      "date": "2026-07-03T20:00:00Z",
+      "subject": "Reduce bundle size by splitting vendor code",
+      "body": "",
+      "files": [
+        {
+          "path": "vite.config.ts",
+          "added": 22,
+          "deleted": 4
+        }
+      ]
+    },
+    {
+      "sha": "2ba1aac18fef3c63de0e92d812541cf985bb534a",
+      "parents": [
+        "196beccf6094200386e77a80a50ac1147ccaa7bc"
+      ],
+      "date": "2026-07-03T23:00:00Z",
+      "subject": "Fix sorting by date taken",
+      "body": "",
+      "files": [
+        {
+          "path": "src/gallery/sort.ts",
+          "added": 27,
+          "deleted": 4
+        }
+      ]
+    },
+    {
+      "sha": "88582f6f1a097a194296ef5a71e61ac6feeedaa5",
+      "parents": [
+        "2ba1aac18fef3c63de0e92d812541cf985bb534a"
+      ],
+      "date": "2026-07-04T02:00:00Z",
+      "subject": "Add album sharing links",
+      "body": "",
+      "files": [
+        {
+          "path": "src/albums/share.ts",
+          "added": 27,
+          "deleted": 4
+        }
+      ]
+    },
+    {
+      "sha": "d3863e6a8ac92ca52dd4b3d8f1bd92c1c7740a2a",
+      "parents": [
+        "88582f6f1a097a194296ef5a71e61ac6feeedaa5"
+      ],
+      "date": "2026-07-04T05:00:00Z",
+      "subject": "Validate share link expiry",
+      "body": "",
+      "files": [
+        {
+          "path": "src/albums/share.ts",
+          "added": 27,
+          "deleted": 4
+        }
+      ]
+    },
+    {
+      "sha": "f410139066b9a74b51c0d33eaeee8b49fe2823d4",
+      "parents": [
+        "d3863e6a8ac92ca52dd4b3d8f1bd92c1c7740a2a"
+      ],
+      "date": "2026-07-04T08:00:00Z",
+      "subject": "Fix login redirect loop",
+      "body": "",
+      "files": [
+        {
+          "path": "src/auth/redirect.ts",
+          "added": 28,
+          "deleted": 0
+        }
+      ]
+    },
+    {
+      "sha": "bcfdd98a716c5d6ec4c02458c11475dfaf65d4c5",
+      "parents": [
+        "f410139066b9a74b51c0d33eaeee8b49fe2823d4"
+      ],
+      "date": "2026-07-04T11:00:00Z",
+      "subject": "Add two-factor authentication",
+      "body": "",
+      "files": [
+        {
+          "path": "src/auth/totp.ts",
+          "added": 24,
+          "deleted": 1
+        }
+      ]
+    },
+    {
+      "sha": "bb03c1c6aa6423d3e5f2157930bf35d5dd913575",
+      "parents": [
+        "bcfdd98a716c5d6ec4c02458c11475dfaf65d4c5"
+      ],
+      "date": "2026-07-04T14:00:00Z",
+      "subject": "Clean up unused styles",
+      "body": "",
+      "files": [
+        {
+          "path": "src/styles/legacy.css",
+          "added": 29,
+          "deleted": 1
+        }
+      ]
+    },
+    {
+      "sha": "e1edb49e327f53a395b997832328594bf28b567e",
+      "parents": [
+        "bb03c1c6aa6423d3e5f2157930bf35d5dd913575"
+      ],
+      "date": "2026-07-04T17:00:00Z",
+      "subject": "Add EXIF metadata panel",
+      "body": "",
+      "files": [
+        {
+          "path": "src/media/exif.ts",
+          "added": 25,
+          "deleted": 2
+        }
+      ]
+    },
+    {
+      "sha": "60fcd2ee58aa3320aaac9445acc5a795716b0e36",
+      "parents": [
+        "e1edb49e327f53a395b997832328594bf28b567e"
+      ],
+      "date": "2026-07-04T20:00:00Z",
+      "subject": "Fix rotated photos on import",
+      "body": "",
+      "files": [
+        {
+          "path": "src/media/rotate.ts",
+          "added": 27,
+          "deleted": 4
+        }
+      ]
+    },
+    {
+      "sha": "80960af1f45deb7b71753a02cc915f8361443ac1",
+      "parents": [
+        "60fcd2ee58aa3320aaac9445acc5a795716b0e36"
+      ],
+      "date": "2026-07-04T23:00:00Z",
+      "subject": "Cache API responses for offline use",
+      "body": "",
+      "files": [
+        {
+          "path": "src/sync/offline.ts",
+          "added": 27,
+          "deleted": 4
+        }
+      ]
+    },
+    {
+      "sha": "b0a3d1fc301aeffeae36d02432841e5b7431b2fe",
+      "parents": [
+        "80960af1f45deb7b71753a02cc915f8361443ac1"
+      ],
+      "date": "2026-07-05T02:00:00Z",
+      "subject": "Add album comments",
+      "body": "",
+      "files": [
+        {
+          "path": "src/albums/comments.ts",
+          "added": 30,
+          "deleted": 2
+        }
+      ]
+    },
+    {
+      "sha": "a4addd8f5bcf3833b3ed749f6669f38c9327c2b0",
+      "parents": [
+        "b0a3d1fc301aeffeae36d02432841e5b7431b2fe"
+      ],
+      "date": "2026-07-05T05:00:00Z",
+      "subject": "Notify album owners about new comments",
+      "body": "",
+      "files": [
+        {
+          "path": "src/albums/notify.ts",
+          "added": 28,
+          "deleted": 0
+        }
+      ]
+    },
+    {
+      "sha": "8bab7994d03fe87bbad43e17838eb8d5c58df318",
+      "parents": [
+        "80960af1f45deb7b71753a02cc915f8361443ac1"
+      ],
+      "date": "2026-07-05T08:00:00Z",
+      "subject": "Fix a flaky upload test",
+      "body": "",
+      "files": [
+        {
+          "path": "tests/upload.test.ts",
+          "added": 28,
+          "deleted": 0
+        }
+      ]
+    },
+    {
+      "sha": "3a87d5294172b90247a539501f365d0e3044a5e1",
+      "parents": [
+        "8bab7994d03fe87bbad43e17838eb8d5c58df318",
+        "a4addd8f5bcf3833b3ed749f6669f38c9327c2b0"
+      ],
+      "date": "2026-07-05T11:00:00Z",
+      "subject": "Merge pull request #322 from synthetic/album-comments",
+      "body": "Album comments",
+      "files": []
+    },
+    {
+      "sha": "8c9654d677251107094f96d731d0d363cd53dd33",
+      "parents": [
+        "3a87d5294172b90247a539501f365d0e3044a5e1"
+      ],
+      "date": "2026-07-05T14:00:00Z",
+      "subject": "Add bulk delete",
+      "body": "",
+      "files": [
+        {
+          "path": "src/gallery/bulk.ts",
+          "added": 27,
+          "deleted": 4
+        }
+      ]
+    },
+    {
+      "sha": "2f51d7b3d0cdcd735698b71156f9a3f2ef90e04a",
+      "parents": [
+        "8c9654d677251107094f96d731d0d363cd53dd33"
+      ],
+      "date": "2026-07-05T17:00:00Z",
+      "subject": "Fix bulk delete selecting hidden items",
+      "body": "",
+      "files": [
+        {
+          "path": "src/gallery/bulk.ts",
+          "added": 27,
+          "deleted": 4
+        }
+      ]
+    },
+    {
+      "sha": "6108c39f79b37715a6f276f55c08d836c737f302",
+      "parents": [
+        "2f51d7b3d0cdcd735698b71156f9a3f2ef90e04a"
+      ],
+      "date": "2026-07-05T20:00:00Z",
+      "subject": "Translate the settings page",
+      "body": "",
+      "files": [
+        {
+          "path": "src/settings/i18n.ts",
+          "added": 28,
+          "deleted": 0
+        }
+      ]
+    },
+    {
+      "sha": "0a8f6fec4bad5b697b9ea09ee3d0b8d85de2fe2c",
+      "parents": [
+        "6108c39f79b37715a6f276f55c08d836c737f302"
+      ],
+      "date": "2026-07-05T23:00:00Z",
+      "subject": "Add a storage usage meter",
+      "body": "",
+      "files": [
+        {
+          "path": "src/settings/storage.ts",
+          "added": 31,
+          "deleted": 3
+        }
+      ]
+    },
+    {
+      "sha": "d92e07b796dbcb96545579f7f3e5c8f83a752444",
+      "parents": [
+        "0a8f6fec4bad5b697b9ea09ee3d0b8d85de2fe2c"
+      ],
+      "date": "2026-07-06T02:00:00Z",
+      "subject": "Fix storage meter rounding",
+      "body": "",
+      "files": [
+        {
+          "path": "src/settings/storage.ts",
+          "added": 31,
+          "deleted": 3
+        }
+      ]
+    },
+    {
+      "sha": "0d616ea371c0ef22ef5bdd1a6ef3b4d5999bffbd",
+      "parents": [
+        "d92e07b796dbcb96545579f7f3e5c8f83a752444"
+      ],
+      "date": "2026-07-06T05:00:00Z",
+      "subject": "Speed up the initial gallery load",
+      "body": "",
+      "files": [
+        {
+          "path": "src/gallery/load.ts",
+          "added": 27,
+          "deleted": 4
+        }
+      ]
+    },
+    {
+      "sha": "f5ec7953c4d060e5fe28093bcb3fd2ac106d434e",
+      "parents": [
+        "0d616ea371c0ef22ef5bdd1a6ef3b4d5999bffbd"
+      ],
+      "date": "2026-07-06T08:00:00Z",
+      "subject": "Add video playback",
+      "body": "",
+      "files": [
+        {
+          "path": "src/media/video.ts",
+          "added": 26,
+          "deleted": 3
+        }
+      ]
+    },
+    {
+      "sha": "458dd1e00b7f4a7da0b78cf041fbc0f1f97e7fee",
+      "parents": [
+        "f5ec7953c4d060e5fe28093bcb3fd2ac106d434e"
+      ],
+      "date": "2026-07-06T11:00:00Z",
+      "subject": "Fix audio desync in videos",
+      "body": "",
+      "files": [
+        {
+          "path": "src/media/video.ts",
+          "added": 26,
+          "deleted": 3
+        }
+      ]
+    },
+    {
+      "sha": "61a228a67d2527d5d1088129a1046e9038c78afa",
+      "parents": [
+        "458dd1e00b7f4a7da0b78cf041fbc0f1f97e7fee"
+      ],
+      "date": "2026-07-06T14:00:00Z",
+      "subject": "Add slideshow mode",
+      "body": "",
+      "files": [
+        {
+          "path": "src/gallery/slideshow.ts",
+          "added": 32,
+          "deleted": 4
+        }
+      ]
+    },
+    {
+      "sha": "9164dbde6119130c729937aed0517dddf7a39ffa",
+      "parents": [
+        "61a228a67d2527d5d1088129a1046e9038c78afa"
+      ],
+      "date": "2026-07-06T17:00:00Z",
+      "subject": "Update contributing guide",
+      "body": "",
+      "files": [
+        {
+          "path": "CONTRIBUTING.md",
+          "added": 23,
+          "deleted": 0
+        }
+      ]
+    },
+    {
+      "sha": "a98af586820bcfe2333c48d6b5cf9b7d66c0e0d7",
+      "parents": [
+        "9164dbde6119130c729937aed0517dddf7a39ffa"
+      ],
+      "date": "2026-07-06T20:00:00Z",
+      "subject": "Add face grouping behind a flag",
+      "body": "",
+      "files": [
+        {
+          "path": "src/media/faces.ts",
+          "added": 26,
+          "deleted": 3
+        }
+      ]
+    },
+    {
+      "sha": "3a6a058b6ce84fad73bf839e50848177f503cb46",
+      "parents": [
+        "a98af586820bcfe2333c48d6b5cf9b7d66c0e0d7"
+      ],
+      "date": "2026-07-06T23:00:00Z",
+      "subject": "Fix face grouping on small images",
+      "body": "",
+      "files": [
+        {
+          "path": "src/media/faces.ts",
+          "added": 26,
+          "deleted": 3
+        }
+      ]
+    },
+    {
+      "sha": "db31d1722a48c1c6336da21197a566711ae1f439",
+      "parents": [
+        "3a6a058b6ce84fad73bf839e50848177f503cb46"
+      ],
+      "date": "2026-07-07T02:00:00Z",
+      "subject": "Add map view for geotagged photos",
+      "body": "",
+      "files": [
+        {
+          "path": "src/gallery/map.ts",
+          "added": 26,
+          "deleted": 3
+        }
+      ]
+    },
+    {
+      "sha": "3adef013471e44855fd7d9b1e61970b0335529cc",
+      "parents": [
+        "db31d1722a48c1c6336da21197a566711ae1f439"
+      ],
+      "date": "2026-07-07T05:00:00Z",
+      "subject": "Fix map tiles not loading over HTTPS",
+      "body": "",
+      "files": [
+        {
+          "path": "src/gallery/map.ts",
+          "added": 26,
+          "deleted": 3
+        }
+      ]
+    },
+    {
+      "sha": "91b149e85a18404e5fc8c993eab70432bcc7081a",
+      "parents": [
+        "3adef013471e44855fd7d9b1e61970b0335529cc"
+      ],
+      "date": "2026-07-07T08:00:00Z",
+      "subject": "Add duplicate photo detection",
+      "body": "",
+      "files": [
+        {
+          "path": "src/media/dupes.ts",
+          "added": 26,
+          "deleted": 3
+        }
+      ]
+    },
+    {
+      "sha": "51b3f6248ffb2227c059cbf0886f7bfbee300c82",
+      "parents": [
+        "91b149e85a18404e5fc8c993eab70432bcc7081a"
+      ],
+      "date": "2026-07-07T11:00:00Z",
+      "subject": "Fix duplicate detection ignoring edits",
+      "body": "",
+      "files": [
+        {
+          "path": "src/media/dupes.ts",
+          "added": 26,
+          "deleted": 3
+        }
+      ]
+    },
+    {
+      "sha": "b1ed6fd44dc9f1582cb08fa32ee7add210414bc8",
+      "parents": [
+        "51b3f6248ffb2227c059cbf0886f7bfbee300c82"
+      ],
+      "date": "2026-07-07T14:00:00Z",
+      "subject": "Add export to ZIP (#340)",
+      "body": "",
+      "files": [
+        {
+          "path": "src/export/zip.ts",
+          "added": 25,
+          "deleted": 2
+        }
+      ]
+    },
+    {
+      "sha": "55f60c75c650bcbeadebc8698968e0c42e4cb7bf",
+      "parents": [
+        "b1ed6fd44dc9f1582cb08fa32ee7add210414bc8"
+      ],
+      "date": "2026-07-07T17:00:00Z",
+      "subject": "Fix ZIP export for large albums (#341)",
+      "body": "",
+      "files": [
+        {
+          "path": "src/export/zip.ts",
+          "added": 25,
+          "deleted": 2
+        }
+      ]
+    },
+    {
+      "sha": "354bf803d9021e64770cd75c08aeb96979d15886",
+      "parents": [
+        "55f60c75c650bcbeadebc8698968e0c42e4cb7bf"
+      ],
+      "date": "2026-07-07T20:00:00Z",
+      "subject": "Add album sort options",
+      "body": "",
+      "files": [
+        {
+          "path": "src/albums/sort.ts",
+          "added": 26,
+          "deleted": 3
+        }
+      ]
+    },
+    {
+      "sha": "63f3968959d5ef442deea3d629a46393c0cc77b1",
+      "parents": [
+        "354bf803d9021e64770cd75c08aeb96979d15886"
+      ],
+      "date": "2026-07-07T23:00:00Z",
+      "subject": "Fix crash on corrupted HEIC files",
+      "body": "",
+      "files": [
+        {
+          "path": "src/media/heic.ts",
+          "added": 25,
+          "deleted": 2
+        }
+      ]
+    },
+    {
+      "sha": "6a2356cc29ad7812839dd696b9641829f12a8e3d",
+      "parents": [
+        "63f3968959d5ef442deea3d629a46393c0cc77b1"
+      ],
+      "date": "2026-07-08T02:00:00Z",
+      "subject": "Add trash with 30-day retention",
+      "body": "",
+      "files": [
+        {
+          "path": "src/gallery/trash.ts",
+          "added": 28,
+          "deleted": 0
+        }
+      ]
+    },
+    {
+      "sha": "f0634744282d79bacca86c3434826633e26f8194",
+      "parents": [
+        "6a2356cc29ad7812839dd696b9641829f12a8e3d"
+      ],
+      "date": "2026-07-08T05:00:00Z",
+      "subject": "Fix restore from trash",
+      "body": "",
+      "files": [
+        {
+          "path": "src/gallery/trash.ts",
+          "added": 28,
+          "deleted": 0
+        }
+      ]
+    },
+    {
+      "sha": "b39d1c8a8586f7beb7cc78a82f8de8de14151567",
+      "parents": [
+        "f0634744282d79bacca86c3434826633e26f8194"
+      ],
+      "date": "2026-07-08T08:00:00Z",
+      "subject": "Show sync status in the header",
+      "body": "",
+      "files": [
+        {
+          "path": "src/ui/header.tsx",
+          "added": 25,
+          "deleted": 2
+        }
+      ]
+    },
+    {
+      "sha": "ddf605209b624815447f55cb95a92309e597b340",
+      "parents": [
+        "b39d1c8a8586f7beb7cc78a82f8de8de14151567"
+      ],
+      "date": "2026-07-08T11:00:00Z",
+      "subject": "Fix sync status flicker",
+      "body": "",
+      "files": [
+        {
+          "path": "src/ui/header.tsx",
+          "added": 25,
+          "deleted": 2
+        }
+      ]
+    },
+    {
+      "sha": "215dca3fbe6d2863b79194976fe32edd25331698",
+      "parents": [
+        "ddf605209b624815447f55cb95a92309e597b340"
+      ],
+      "date": "2026-07-08T14:00:00Z",
+      "subject": "Revert \"Add slideshow mode\"",
+      "body": "This reverts commit 61a228a67d2527d5d1088129a1046e9038c78afa.\n\nSlideshow needs more work.",
+      "files": [
+        {
+          "path": "src/gallery/slideshow.ts",
+          "added": 32,
+          "deleted": 4
+        }
+      ]
+    },
+    {
+      "sha": "cc567b6995e634f8e12222bf8abbc9559c5419a1",
+      "parents": [
+        "215dca3fbe6d2863b79194976fe32edd25331698",
+        "39f8f0813cb8dee0735de2a172e24f3f85c617f3"
+      ],
+      "date": "2026-07-08T17:00:00Z",
+      "subject": "Merge branch 'hotfix'",
+      "body": "",
+      "files": []
+    }
+  ]
+}

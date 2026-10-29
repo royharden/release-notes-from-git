@@ -1,0 +1,11 @@
+{
+  "schema": "gold-manifest.v1",
+  "seed": 2901,
+  "frozen_on": null,
+  "target": { "ranges": 20, "repositories": 8 },
+  "qualified_ranges": 0,
+  "qualified_repositories": 0,
+  "target_status": "unmet",
+  "screening": [],
+  "ranges": []
+}

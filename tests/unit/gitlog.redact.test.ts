@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { parseLog } from '../../src/core/gitlog/parse.ts';
-import { containsEmail, createRedactionCounts, redactEmails, stripNameTrailers } from '../../src/core/gitlog/redact.ts';
+import { baseUrlProblem, containsEmail, createRedactionCounts, redactEmails, stripNameTrailers } from '../../src/core/gitlog/redact.ts';
 import { SANITIZED_COMMIT_FIELDS, SANITIZED_FILE_FIELDS } from '../../src/core/gitlog/schema.ts';
 import type { SanitizedLog } from '../../src/core/gitlog/schema.ts';
 
@@ -108,6 +108,13 @@ describe('redaction at parse time', () => {
     // The four email strings outside trailers plus the one in base_url.
     expect(result.report.redactions.email).toBe(5);
     expect(result.report.redactions.credential_url).toBe(0);
+  });
+
+  it('classifies an unparseable base_url holding an address as email, other "@" as credential_url', () => {
+    expect(baseUrlProblem(`not a url ${SECRET_EMAIL}`)).toBe('email');
+    expect(baseUrlProblem('not a url zelda.q%40example-mail.org')).toBe('email');
+    expect(baseUrlProblem('not a url user@host')).toBe('credential_url');
+    expect(baseUrlProblem('not a url')).toBeNull();
   });
 
   it('applies only email redaction to a subject, so a trailer-like subject survives', () => {

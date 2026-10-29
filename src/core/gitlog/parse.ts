@@ -135,7 +135,7 @@ function checkRecord(raw: unknown): RejectCode | null {
   if (!Array.isArray(parents)) return 'bad_parents';
   const parentShas = parents.map(wellFormedSha);
   if (parentShas.some((p) => p === null || p === sha) || new Set(parentShas).size !== parentShas.length) return 'bad_parents';
-  if (typeof raw.date !== 'string' || !ISO_DATE_TIME.test(raw.date) || !Number.isFinite(Date.parse(raw.date))) return 'bad_date';
+  if (typeof raw.date !== 'string' || !isCalendarDateTime(raw.date)) return 'bad_date';
   if (typeof raw.subject !== 'string') return 'bad_subject';
   if (typeof raw.body !== 'string') return 'bad_body';
   if (codePointLength(raw.body) > LIMITS.maxBodyChars) return 'body_too_long';
@@ -202,6 +202,24 @@ function wellFormedSha(value: unknown): string | null {
   if (typeof value !== 'string') return null;
   const sha = value.toLowerCase();
   return FULL_SHA.test(sha) ? sha : null;
+}
+
+/**
+ * Strict ISO date-time whose calendar day exists: the y/m/d parts must survive a Date.UTC round trip (engines
+ * differ on 2026-02-30: some roll it over to March, some return Invalid Date; both are refused here), the time
+ * parts must be in range, and the whole string must parse.
+ */
+function isCalendarDateTime(value: string): boolean {
+  if (!ISO_DATE_TIME.test(value) || !Number.isFinite(Date.parse(value))) return false;
+  const y = Number(value.slice(0, 4));
+  const m = Number(value.slice(5, 7));
+  const d = Number(value.slice(8, 10));
+  const day = new Date(Date.UTC(y, m - 1, d));
+  if (day.getUTCFullYear() !== y || day.getUTCMonth() !== m - 1 || day.getUTCDate() !== d) return false;
+  const hh = Number(value.slice(11, 13));
+  const mm = Number(value.slice(14, 16));
+  const ss = Number(value.slice(17, 19));
+  return hh <= 23 && mm <= 59 && ss <= 59;
 }
 
 /** null (binary) or a non-negative safe integer. Rejects negative, fractional and non-finite (e.g. 1e999) counts. */
